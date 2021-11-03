@@ -55,7 +55,7 @@ func GetSaldo(saldo models.Saldo) ([]models.Saldo, error) {
 	ctx := context.Background()
 	cn, _ := Pool.Acquire(ctx)
 	defer cn.Release()
-	rows, err := cn.Query(context.Background(), sqlGetSaldo())
+	rows, err := cn.Query(context.Background(), sqlGetSaldo(), saldo.ContaId, saldo.TitularId)
 	if err != nil {
 		log.Println("Erro no SQL \"GetSaldo\":", err.Error())
 		return nil, err
@@ -71,12 +71,29 @@ func GetSaldo(saldo models.Saldo) ([]models.Saldo, error) {
 	return res, nil
 }
 
-func RegistraSaldo(rs models.RegistroSaldo) error {
+func NewSaldo(saldo models.Saldo) error {
 	ctx := context.Background()
 	cn, _ := Pool.Acquire(ctx)
 	defer cn.Release()
 
-	com, err := cn.Exec(ctx, sqlRegistraSaldo(), rs.TitularId, rs.ContaId, rs.Sinal, rs.Valor)
+	com, err := cn.Exec(ctx, sqlNewSaldo(), saldo.TitularId, saldo.ContaId)
+	if err != nil {
+		log.Println("Erro no SQL \"RegistraSaldo\":", err.Error())
+		return err
+	}
+
+	if com.RowsAffected() > 0 {
+		log.Println("Registro salvo com sucesso.")
+	}
+	return nil
+}
+
+func NewRegistroSaldo(rs models.RegistroSaldo) error {
+	ctx := context.Background()
+	cn, _ := Pool.Acquire(ctx)
+	defer cn.Release()
+
+	com, err := cn.Exec(ctx, sqlRegistroSaldo(), rs.TitularId, rs.ContaId, rs.Sinal, rs.Valor)
 	if err != nil {
 		log.Println("Erro no SQL \"RegistraSaldo\":", err.Error())
 		return err
@@ -112,7 +129,7 @@ func atualizaSaldo(rs models.RegistroSaldo) {
 		return
 	}
 
-	res, err := getAllRegistrosSaldo(rs)
+	res, err := GetAllRegistrosSaldo(rs)
 	if err != nil {
 		log.Printf("Falha ao atualizar saldo de %d - %d\n", rs.TitularId, rs.ContaId)
 		return
@@ -137,7 +154,7 @@ func atualizaSaldo(rs models.RegistroSaldo) {
 	}
 }
 
-func getAllRegistrosSaldo(rs models.RegistroSaldo) ([]models.RegistroSaldo, error) {
+func GetAllRegistrosSaldo(rs models.RegistroSaldo) ([]models.RegistroSaldo, error) {
 	ctx := context.Background()
 	cn, _ := Pool.Acquire(ctx)
 	defer cn.Release()

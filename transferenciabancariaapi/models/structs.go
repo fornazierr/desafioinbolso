@@ -50,6 +50,22 @@ func (t *RegistroSaldo) Erros() error {
 	}
 }
 
+func (t *RegistroSaldo) ErrosGET() error {
+	erros := ""
+	if t.ContaId < 1 {
+		erros += "ID da Conta vazio."
+	}
+	if t.TitularId < 1 {
+		erros += "ID do Titular vazio."
+	}
+
+	if erros != "" {
+		return errors.New(erros)
+	} else {
+		return nil
+	}
+}
+
 type Transferencia struct {
 	ContaOrigemId  int     `json:"contaorigemid"`
 	ContaDestinoId int     `json:"contadestinoid"`
@@ -73,7 +89,6 @@ func (t *Transferencia) Erros() error {
 	} else {
 		return nil
 	}
-
 }
 
 type Config struct {
