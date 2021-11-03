@@ -41,6 +41,8 @@ func (cr *CredencialRouter) initRoutes() {
 	cr.Router.HandleFunc("/contabancaria", postConta).Methods("POST")
 	cr.Router.HandleFunc("/contabancaria", deleteConta).Methods("DELETE")
 	cr.Router.HandleFunc("/contabancaria", deleteContaById).Methods("DELETE")
+
+	broker.InitBroker()
 }
 
 func sendError(err error, w http.ResponseWriter) {

@@ -4,30 +4,59 @@ import (
 	"contabancariaapi/models"
 	"contabancariaapi/utilapi"
 	"context"
+	"fmt"
 	"log"
+	"sync"
+	"time"
 
 	"github.com/jackc/pgx/v4"
 	"github.com/jackc/pgx/v4/pgxpool"
 )
 
-func getConnection() (*pgxpool.Pool, error) {
-	dbpool, err := pgxpool.Connect(context.Background(), utilapi.GetUrlConnection())
+var Pool *pgxpool.Pool
+var mu sync.Mutex = sync.Mutex{}
+
+func InitBroker() {
+	log.Println("Iniciando database.")
+	mu.Lock()
+	defer mu.Unlock()
+
+	var connStr string = utilapi.GetUrlConnection()
+	log.Printf("Url de conexao: %s\n", connStr)
+	config, err := pgxpool.ParseConfig(connStr)
+	config.MaxConns = 10
+	config.MinConns = 2
+	config.MaxConnIdleTime = 2 * time.Minute
+	config.MaxConnLifetime = 2 * time.Minute
+
 	if err != nil {
-		return nil, err
+		msg := fmt.Sprintf("Falha ao configurar pool. Url utilizada: %s\n", connStr)
+		log.Fatalln(msg, err)
+		return
 	}
 
-	return dbpool, nil
+	ctx := context.Background()
+
+	Pool, err = pgxpool.ConnectConfig(ctx, config)
+
+	if err != nil {
+		log.Fatal("Erro conectando ao banco de dados: ", err)
+	}
+
+	// inicia as conexões
+	for i := 0; i < int(config.MinConns); i++ {
+		cn, _ := Pool.Acquire(ctx)
+		defer cn.Release()
+	}
+	log.Println("Banco de dados inicializado")
 }
 
 func GetTitular() (*[]models.Titular, error) {
-	pool, err := getConnection()
-	if err != nil {
-		log.Println("Erro na função \"GetTitular\": " + err.Error())
-		return nil, err
-	}
-	defer pool.Close()
+	ctx := context.Background()
+	cn, _ := Pool.Acquire(ctx)
+	defer cn.Release()
 
-	rows, err := pool.Query(context.Background(), sqlTitular())
+	rows, err := cn.Query(context.Background(), sqlTitular())
 	if err != nil {
 		log.Println("Erro no SQL \"GetTitular\":", err.Error())
 		return nil, err
@@ -44,14 +73,11 @@ func GetTitular() (*[]models.Titular, error) {
 }
 
 func GetTitularById(id int) (*[]models.Titular, error) {
-	pool, err := getConnection()
-	if err != nil {
-		log.Println("Erro na função \"GetTitularById\": " + err.Error())
-		return nil, err
-	}
-	defer pool.Close()
+	ctx := context.Background()
+	cn, _ := Pool.Acquire(ctx)
+	defer cn.Release()
 
-	rows, err := pool.Query(context.Background(), sqlTitularById(), id)
+	rows, err := cn.Query(context.Background(), sqlTitularById(), id)
 	if err != nil {
 		log.Println("Erro no SQL \"GetTitularById\":", err.Error())
 		return nil, err
@@ -82,14 +108,11 @@ func PostTitular(titular models.Titular) error {
 
 //(nome, cpf, email, nascimento, nomepai, nomemae, cidade, estado)
 func newTitular(titular models.Titular) error {
-	pool, err := getConnection()
-	if err != nil {
-		log.Println("Erro na função \"newTitular\": " + err.Error())
-		return err
-	}
-	defer pool.Close()
+	ctx := context.Background()
+	cn, _ := Pool.Acquire(ctx)
+	defer cn.Release()
 
-	_, err = pool.Exec(context.Background(), sqlNewTitular(), titular.Nome, titular.CPF, titular.Email, titular.Nascimento, titular.NomePai, titular.NomeMae, titular.Cidade, titular.Estado)
+	_, err := cn.Exec(context.Background(), sqlNewTitular(), titular.Nome, titular.CPF, titular.Email, titular.Nascimento, titular.NomePai, titular.NomeMae, titular.Cidade, titular.Estado)
 	if err != nil {
 		return nil
 	}
@@ -98,14 +121,11 @@ func newTitular(titular models.Titular) error {
 }
 
 func updateTitular(titular models.Titular) error {
-	pool, err := getConnection()
-	if err != nil {
-		log.Println("Erro na função \"updateTitular\": " + err.Error())
-		return err
-	}
-	defer pool.Close()
+	ctx := context.Background()
+	cn, _ := Pool.Acquire(ctx)
+	defer cn.Release()
 
-	_, err = pool.Exec(context.Background(), sqlUpdateTitular(), titular.Nome, titular.CPF, titular.Email, titular.Nascimento, titular.NomePai, titular.NomeMae, titular.Cidade, titular.Estado, titular.ID)
+	_, err := cn.Exec(context.Background(), sqlUpdateTitular(), titular.Nome, titular.CPF, titular.Email, titular.Nascimento, titular.NomePai, titular.NomeMae, titular.Cidade, titular.Estado, titular.ID)
 	if err != nil {
 		return nil
 	}
@@ -114,14 +134,11 @@ func updateTitular(titular models.Titular) error {
 }
 
 func DeleteTitular(titular models.Titular) error {
-	pool, err := getConnection()
-	if err != nil {
-		log.Println("Erro na função \"DeleteTitular\": " + err.Error())
-		return err
-	}
-	defer pool.Close()
+	ctx := context.Background()
+	cn, _ := Pool.Acquire(ctx)
+	defer cn.Release()
 
-	_, err = pool.Exec(context.Background(), sqlDeleteTitular(), titular.ID)
+	_, err := cn.Exec(context.Background(), sqlDeleteTitular(), titular.ID)
 	if err != nil {
 		return nil
 	}
@@ -130,14 +147,11 @@ func DeleteTitular(titular models.Titular) error {
 }
 
 func GetContaBancaria() (*[]models.ContaBancaria, error) {
-	pool, err := getConnection()
-	if err != nil {
-		log.Println("Erro na conexão \"GetContaBancaria\": " + err.Error())
-		return nil, err
-	}
-	defer pool.Close()
+	ctx := context.Background()
+	cn, _ := Pool.Acquire(ctx)
+	defer cn.Release()
 
-	rows, err := pool.Query(context.Background(), slqGetContaBancaria())
+	rows, err := cn.Query(context.Background(), slqGetContaBancaria())
 	if err != nil {
 		log.Println("Erro no SQL \"GetContaBancaria\":", err.Error())
 		return nil, err
@@ -154,14 +168,11 @@ func GetContaBancaria() (*[]models.ContaBancaria, error) {
 }
 
 func GetContaBancariaById(id int) (*[]models.ContaBancaria, error) {
-	pool, err := getConnection()
-	if err != nil {
-		log.Println("Erro na conexão \"GetContaBancariaById\": " + err.Error())
-		return nil, err
-	}
-	defer pool.Close()
+	ctx := context.Background()
+	cn, _ := Pool.Acquire(ctx)
+	defer cn.Release()
 
-	rows, err := pool.Query(context.Background(), slqGetContaBancariaById(), id)
+	rows, err := cn.Query(context.Background(), slqGetContaBancariaById(), id)
 	if err != nil {
 		log.Println("Erro no SQL \"GetContaBancariaById\":", err.Error())
 		return nil, err
@@ -178,14 +189,11 @@ func GetContaBancariaById(id int) (*[]models.ContaBancaria, error) {
 }
 
 func SaveContaBancaria(cb models.ContaBancaria) error {
-	pool, err := getConnection()
-	if err != nil {
-		log.Println("Erro na função \"SaveContaBancaria\": " + err.Error())
-		return err
-	}
-	defer pool.Close()
+	ctx := context.Background()
+	cn, _ := Pool.Acquire(ctx)
+	defer cn.Release()
 
-	_, err = pool.Exec(context.Background(), sqlNewContaBancaria(), cb.CodigoBanco, cb.Agencia, cb.Conta, cb.Digito, cb.TitularId)
+	_, err := cn.Exec(context.Background(), sqlNewContaBancaria(), cb.CodigoBanco, cb.Agencia, cb.Conta, cb.Digito, cb.TitularId)
 	if err != nil {
 		return err
 	}
@@ -194,14 +202,11 @@ func SaveContaBancaria(cb models.ContaBancaria) error {
 }
 
 func DeleteContaBancaria(cb models.ContaBancaria) error {
-	pool, err := getConnection()
-	if err != nil {
-		log.Println("Erro na função \"DeleteTitular\": " + err.Error())
-		return err
-	}
-	defer pool.Close()
+	ctx := context.Background()
+	cn, _ := Pool.Acquire(ctx)
+	defer cn.Release()
 
-	_, err = pool.Exec(context.Background(), sqlDeleteContaBancaria(), cb.ID)
+	_, err := cn.Exec(context.Background(), sqlDeleteContaBancaria(), cb.ID)
 	if err != nil {
 		return nil
 	}

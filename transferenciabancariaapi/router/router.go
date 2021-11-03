@@ -48,6 +48,7 @@ func (r *TransferenciaRouter) initRoutes() {
 	r.Router.HandleFunc("/getsaldo", getSaldoConta).Methods("POST")
 	r.Router.HandleFunc("/registrasaldo", registraSaldo).Methods("POST")
 	r.Router.HandleFunc("/realizatransferencia", realizaTransferencia).Methods("POST")
+	broker.InitBroker()
 }
 
 func getSaldoConta(w http.ResponseWriter, r *http.Request) {

@@ -2,7 +2,10 @@ package broker
 
 import (
 	"context"
+	"fmt"
 	"log"
+	"sync"
+	"time"
 	"transferenciabancariaapi/apiutil"
 	"transferenciabancariaapi/models"
 
@@ -10,23 +13,49 @@ import (
 	"github.com/jackc/pgx/v4/pgxpool"
 )
 
-func getConnection() (*pgxpool.Pool, error) {
-	dbpool, err := pgxpool.Connect(context.Background(), apiutil.GetUrlConnection())
+var Pool *pgxpool.Pool
+var mu sync.Mutex = sync.Mutex{}
+
+func InitBroker() {
+	log.Println("Iniciando database.")
+	mu.Lock()
+	defer mu.Unlock()
+
+	var connStr string = apiutil.GetUrlConnection()
+	log.Printf("Url de conexao: %s\n", connStr)
+	config, err := pgxpool.ParseConfig(connStr)
+	config.MaxConns = 10
+	config.MinConns = 2
+	config.MaxConnIdleTime = 2 * time.Minute
+	config.MaxConnLifetime = 2 * time.Minute
+
 	if err != nil {
-		return nil, err
+		msg := fmt.Sprintf("Falha ao configurar pool. Url utilizada: %s\n", connStr)
+		log.Fatalln(msg, err)
+		return
 	}
 
-	return dbpool, nil
+	ctx := context.Background()
+
+	Pool, err = pgxpool.ConnectConfig(ctx, config)
+
+	if err != nil {
+		log.Fatal("Erro conectando ao banco de dados: ", err)
+	}
+
+	// inicia as conexões
+	for i := 0; i < int(config.MinConns); i++ {
+		cn, _ := Pool.Acquire(ctx)
+		defer cn.Release()
+	}
+	log.Println("Banco de dados inicializado")
 }
 
 func GetSaldo(saldo models.Saldo) (*[]models.Saldo, error) {
-	pool, err := getConnection()
-	if err != nil {
-		log.Println("Erro na função \"GetSaldo\": " + err.Error())
-		return nil, err
-	}
-	defer pool.Close()
-	rows, err := pool.Query(context.Background(), sqlGetSaldo())
+	ctx := context.Background()
+	cn, _ := Pool.Acquire(ctx)
+	defer cn.Release()
+	rows, err := cn.Query(context.Background(), sqlGetSaldo())
 	if err != nil {
 		log.Println("Erro no SQL \"GetSaldo\":", err.Error())
 		return nil, err
@@ -43,12 +72,9 @@ func GetSaldo(saldo models.Saldo) (*[]models.Saldo, error) {
 }
 
 func RegistraSaldo(rs models.RegistroSaldo) error {
-	pool, err := getConnection()
-	if err != nil {
-		log.Println("Erro na função \"RegistraSaldo\": " + err.Error())
-		return err
-	}
-	defer pool.Close()
+	ctx := context.Background()
+	cn, _ := Pool.Acquire(ctx)
+	defer cn.Release()
 
 	go atualizaSaldo(rs)
 	return nil
@@ -59,12 +85,9 @@ func atualizaSaldo(rs models.RegistroSaldo) {
 }
 
 func RealizaTransferencia(tr models.Transferencia) error {
-	pool, err := getConnection()
-	if err != nil {
-		log.Println("Erro na função \"GetTitular\": " + err.Error())
-		return err
-	}
-	defer pool.Close()
+	ctx := context.Background()
+	cn, _ := Pool.Acquire(ctx)
+	defer cn.Release()
 	return nil
 }
 
