@@ -95,11 +95,11 @@ func realizaTransferencia(w http.ResponseWriter, r *http.Request) {
 		sendError(err, w)
 	} else {
 		log.Printf("Objeto da requisição: %+v\n", transf)
-		err := broker.RegistraSaldo(transf)
+		err := broker.RealizaTransferencia(transf)
 		if err != nil {
 			sendError(err, w)
 		} else {
-			sendOk("Sucesso ao registrar saldo.", w)
+			sendOk("Sucesso ao registrar transferência.", w)
 		}
 	}
 }

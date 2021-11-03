@@ -57,7 +57,23 @@ type Transferencia struct {
 }
 
 func (t *Transferencia) Erros() error {
-	return nil
+	erros := ""
+	if t.ContaDestinoId < 1 {
+		erros += "Conta de Destino não informada."
+	}
+	if t.ContaOrigemId < 1 {
+		erros += "Conta de Origem não informada."
+	}
+	if t.Valor < 0.0000001 {
+		erros += "Valores negativos não são aceitos."
+	}
+
+	if erros != "" {
+		return errors.New(erros)
+	} else {
+		return nil
+	}
+
 }
 
 type Config struct {
