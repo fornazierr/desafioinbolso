@@ -1,8 +1,9 @@
 drop table if exists bancos;
 
-create table if not exists bancos (
-	cod SERIAL,
-	banco varchar(255)
+CREATE TABLE if not exists public.bancos (
+	cod serial NOT NULL,
+	banco varchar(255) NULL,
+	CONSTRAINT cod_pkey PRIMARY KEY (cod)
 );
 
 INSERT INTO bancos (cod, banco) VALUES (001,'001 - BANCO DO BRASIL S/A');
