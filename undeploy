@@ -1,0 +1,7 @@
+#!/bin/bash
+
+echo "Realizando o UNDEPLOY de TODOS os módulos de bancos"
+
+DB="inbolsodb"
+MOD1="contabancariaapi"
+MOD2=""
