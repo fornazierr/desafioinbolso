@@ -187,9 +187,6 @@ func UpdateSaldo(saldo models.Saldo) error {
 }
 
 func RealizaTransferencia(tr models.Transferencia) error {
-	ctx := context.Background()
-	cn, _ := Pool.Acquire(ctx)
-	defer cn.Release()
 	return nil
 }
 

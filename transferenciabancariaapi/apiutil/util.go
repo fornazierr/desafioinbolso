@@ -25,6 +25,7 @@ func GetConfig() models.Config {
 	c.DB_USER = os.Getenv("DB_USER")
 	c.URL_PORT = os.Getenv("URL_PORT")
 	c.URL_PORT = os.Getenv("URL_PORT")
+	c.CONTABANCARIA_API = os.Getenv("CONTABANCARIA_API")
 
 	args := os.Args[1:]
 
@@ -45,6 +46,8 @@ func GetConfig() models.Config {
 			c.URL_PORT = arg[1]
 		case "URL_HOST":
 			c.URL_HOST = arg[1]
+		case "CONTABANCARIA_API":
+			c.CONTABANCARIA_API = arg[1]
 		}
 	}
 
@@ -68,6 +71,9 @@ func GetConfig() models.Config {
 	}
 	if c.URL_HOST == "" {
 		c.URL_HOST = "127.0.0.1"
+	}
+	if c.CONTABANCARIA_API == "" {
+		c.CONTABANCARIA_API = "http://127.0.0.1:15001"
 	}
 
 	return c
