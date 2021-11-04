@@ -1,0 +1,38 @@
+#!/bin/sh
+
+DEPLOY="inbolsodb"
+echo "Iniciando deploy de banco de dados ${DEPLOY}"
+
+echo "1 - Removendo imagem .tar antiga, caso exista"
+rm -rf ${DEPLOY}.tar.gz
+
+echo "2 - Parando e removendo docker anteriores, caso existam"
+docker stop ${DEPLOY}
+docker rm ${DEPLOY}
+
+echo "3 - Removendo imagem docker antiga, caso exista"
+docker rmi inbolso/${DEPLOY}:1.0
+
+echo "4 - Criando nova imagem docker"
+docker build -t inbolso/${DEPLOY}:1.0 . 
+
+echo "5 - Gravando nova imagem docker em arquivo ${DEPLOY}.tar.gz"
+docker save inbolso/${DEPLOY}:1.0 | gzip > ${DEPLOY}.tar.gz
+
+echo "6 - Exportando variáveis de ambiente"
+INT_PORT=5432
+EXT_PORT=15432
+
+echo "7 - Carregando imagem docker"
+if [ -f "${DEPLOY}.tar.gz" ]
+then
+  docker rmi inbolso/${DEPLOY}:1.0
+  zcat ${DEPLOY}.tar.gz | docker load
+  rm -f ${DEPLOY}-old.tar.gz
+  mv ${DEPLOY}.tar.gz ${DEPLOY}-old.tar.gz
+fi
+
+echo "8 - Iniciando docker"
+docker run --name ${DEPLOY} -v /var/log:/var/log -p ${EXT_PORT}:${INT_PORT} -e POSTGRES_PASSWORD=12345678 -d inbolso/${DEPLOY}:1.0
+
+#docker logs -f -t ${DEPLOY}
