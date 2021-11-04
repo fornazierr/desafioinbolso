@@ -29,7 +29,7 @@ func slqGetContaBancariaById() string {
 }
 
 func sqlNewContaBancaria() string {
-	return "INSERT INTO public.contabancaria (codigobanco, agencia, conta, digito, titular_id) VALUES($1, $2, $3, $4, $5);"
+	return "INSERT INTO public.contabancaria (codigobanco, agencia, conta, digito, titular_id) VALUES($1, $2, $3, $4, $5) RETURNING id;"
 }
 
 func sqlDeleteContaBancaria() string {

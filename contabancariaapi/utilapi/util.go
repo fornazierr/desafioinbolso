@@ -9,13 +9,14 @@ import (
 
 func GetConfig() models.Config {
 	c := models.Config{
-		DB_NAME:  "",
-		DB_PORT:  "",
-		DB_USER:  "",
-		DB_HOST:  "",
-		DB_PASS:  "",
-		URL_PORT: "",
-		URL_HOST: "",
+		DB_NAME:          "",
+		DB_PORT:          "",
+		DB_USER:          "",
+		DB_HOST:          "",
+		DB_PASS:          "",
+		URL_PORT:         "",
+		URL_HOST:         "",
+		TRANFERENCIA_API: "",
 	}
 
 	c.DB_NAME = os.Getenv("DB_NAME")
@@ -25,6 +26,7 @@ func GetConfig() models.Config {
 	c.DB_USER = os.Getenv("DB_USER")
 	c.URL_PORT = os.Getenv("URL_PORT")
 	c.URL_PORT = os.Getenv("URL_PORT")
+	c.TRANFERENCIA_API = os.Getenv("TRANFERENCIA_API")
 
 	args := os.Args[1:]
 
@@ -45,6 +47,8 @@ func GetConfig() models.Config {
 			c.URL_PORT = arg[1]
 		case "URL_HOST":
 			c.URL_HOST = arg[1]
+		case "TRANFERENCIA_API":
+			c.TRANFERENCIA_API = arg[1]
 		}
 	}
 
@@ -67,7 +71,10 @@ func GetConfig() models.Config {
 		c.URL_PORT = "15001"
 	}
 	if c.URL_HOST == "" {
-		c.URL_HOST = "localhost"
+		c.URL_HOST = "127.0.0.1"
+	}
+	if c.TRANFERENCIA_API == "" {
+		c.TRANFERENCIA_API = "http://127.0.0.1:15002"
 	}
 
 	return c

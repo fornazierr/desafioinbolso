@@ -114,16 +114,22 @@ func (cb *ContaBancaria) ErrosDelete() error {
 }
 
 type Config struct {
-	DB_NAME  string `json:"bdname"`
-	DB_PORT  string `json:"dbport"`
-	DB_USER  string `json:"dbuser"`
-	DB_PASS  string `json:"dbpass"`
-	DB_HOST  string `json:"dbhost"`
-	URL_PORT string `json:"urlport"`
-	URL_HOST string `json:"urlhost"`
+	DB_NAME          string `json:"bdname"`
+	DB_PORT          string `json:"dbport"`
+	DB_USER          string `json:"dbuser"`
+	DB_PASS          string `json:"dbpass"`
+	DB_HOST          string `json:"dbhost"`
+	URL_PORT         string `json:"urlport"`
+	URL_HOST         string `json:"urlhost"`
+	TRANFERENCIA_API string `json:"transferenciaapi"`
 }
 
 type ReturnMessage struct {
 	Status  int    `json:"status"`
 	Message string `json:"message"`
+}
+
+type RequestSaldo struct {
+	TitularId int `json:"titularid"`
+	ContaId   int `json:"contaid"`
 }

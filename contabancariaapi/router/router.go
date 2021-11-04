@@ -193,6 +193,7 @@ func postConta(w http.ResponseWriter, req *http.Request) {
 		}
 	}
 }
+
 func deleteConta(w http.ResponseWriter, req *http.Request) {
 	log.Println("Nova requisição em \"deleteTitular\".")
 	var cb models.ContaBancaria

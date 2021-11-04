@@ -193,12 +193,33 @@ func SaveContaBancaria(cb models.ContaBancaria) error {
 	cn, _ := Pool.Acquire(ctx)
 	defer cn.Release()
 
-	_, err := cn.Exec(context.Background(), sqlNewContaBancaria(), cb.CodigoBanco, cb.Agencia, cb.Conta, cb.Digito, cb.TitularId)
+	// _, err := cn.Exec(context.Background(), sqlNewContaBancaria(), cb.CodigoBanco, cb.Agencia, cb.Conta, cb.Digito, cb.TitularId)
+	rows, err := cn.Query(context.Background(), sqlNewContaBancaria(), cb.CodigoBanco, cb.Agencia, cb.Conta, cb.Digito, cb.TitularId)
 	if err != nil {
 		return err
 	}
 
+	id, err := getReturningId(rows)
+	if err != nil {
+		return err
+	}
+	log.Println("Id Retornado: ", id)
+	cb.ID = id
+	go sendCriarNovoSaldo(cb)
 	return nil
+}
+
+func getReturningId(rows pgx.Rows) (int, error) {
+	var id int
+
+	for rows.Next() {
+		err := rows.Err()
+		if err != nil {
+			return 0, err
+		}
+		rows.Scan(&id)
+	}
+	return id, nil
 }
 
 func DeleteContaBancaria(cb models.ContaBancaria) error {

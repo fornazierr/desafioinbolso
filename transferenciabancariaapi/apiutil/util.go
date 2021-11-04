@@ -67,7 +67,7 @@ func GetConfig() models.Config {
 		c.URL_PORT = "15002"
 	}
 	if c.URL_HOST == "" {
-		c.URL_HOST = "localhost"
+		c.URL_HOST = "127.0.0.1"
 	}
 
 	return c
