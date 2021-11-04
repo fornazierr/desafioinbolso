@@ -25,7 +25,7 @@ func GetConfig() models.Config {
 	c.DB_HOST = os.Getenv("DB_HOST")
 	c.DB_USER = os.Getenv("DB_USER")
 	c.URL_PORT = os.Getenv("URL_PORT")
-	c.URL_PORT = os.Getenv("URL_PORT")
+	c.URL_HOST = os.Getenv("URL_HOST")
 	c.TRANFERENCIA_API = os.Getenv("TRANFERENCIA_API")
 
 	args := os.Args[1:]
@@ -68,7 +68,7 @@ func GetConfig() models.Config {
 		c.DB_USER = "postgres"
 	}
 	if c.URL_PORT == "" {
-		c.URL_PORT = "15001"
+		c.URL_PORT = "8080"
 	}
 	if c.URL_HOST == "" {
 		c.URL_HOST = "127.0.0.1"
