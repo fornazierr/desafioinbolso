@@ -6,4 +6,4 @@ WORKDIR /
 
 COPY *.sql /docker-entrypoint-initdb.d/
 
-EXPOSE 8080
+EXPOSE 5432
