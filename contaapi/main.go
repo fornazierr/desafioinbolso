@@ -1,9 +1,9 @@
 package main
 
 import (
+	"contaapi/apiutil"
 	"contaapi/models"
 	"contaapi/router"
-	"contaapi/utilapi"
 	"fmt"
 	"log"
 	"net/http"
@@ -14,7 +14,7 @@ var Config models.Config
 func main() {
 	log.Println("Iniciando Modulo de Gerenciamento de Contas Bancarias")
 	log.Println("Carregando configurações")
-	Config = utilapi.GetConfig()
+	Config = apiutil.GetConfig()
 	log.Printf("Configurações: %+v\n", Config)
 	log.Println("Carregando router")
 	r := router.StartRouter()

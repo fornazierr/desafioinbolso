@@ -187,7 +187,11 @@ func UpdateSaldo(saldo models.Saldo) error {
 }
 
 func RealizaTransferencia(tr models.Transferencia) error {
-	return nil
+	contaOrigem, err := getContaBancariaAPI(tr.ContaOrigemId)
+	if err != nil {
+		return err
+	}
+
 }
 
 func rowsToArraySaldo(rows pgx.Rows) []models.Saldo {

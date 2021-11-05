@@ -33,6 +33,6 @@ then
 fi
 
 echo "8 - Iniciando docker"
-docker run -d --name ${DEPLOY} --hostname ${DEPLOY} -v /var/log:/var/log -p ${EXT_PORT}:${INT_PORT} -e POSTGRES_PASSWORD=12345678 inbolso/${DEPLOY}:1.0
-docker network connect inbolt ${DEPLOY}
-docker restart ${DEPLOY}
+docker run -d --name ${DEPLOY} -v /var/log:/var/log -p ${EXT_PORT}:${INT_PORT} -e POSTGRES_PASSWORD=12345678 inbolso/${DEPLOY}:1.0
+#docker network connect inbolso ${DEPLOY}
+#docker restart ${DEPLOY}

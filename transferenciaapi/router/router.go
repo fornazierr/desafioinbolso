@@ -25,25 +25,6 @@ func StartRouter() *TransferenciaRouter {
 	return r
 }
 
-func sendError(err error, w http.ResponseWriter) {
-	res := models.ReturnMessage{
-		Status:  -1,
-		Message: fmt.Sprintf("Erro : %s", err.Error()),
-	}
-	resByte, _ := json.Marshal(res)
-	fmt.Fprintln(w, string(resByte))
-}
-
-func sendOk(val interface{}, w http.ResponseWriter) {
-	valJson, _ := json.Marshal(val)
-	res := models.ReturnMessage{
-		Status:  0,
-		Message: string(valJson),
-	}
-	resByte, _ := json.Marshal(res)
-	fmt.Fprintln(w, string(resByte))
-}
-
 func (r *TransferenciaRouter) initRoutes() {
 	r.Router.HandleFunc("/getsaldo", getSaldoConta).Methods("POST")
 	r.Router.HandleFunc("/newsaldo", newSaldo).Methods("POST")
@@ -141,4 +122,23 @@ func realizaTransferencia(w http.ResponseWriter, r *http.Request) {
 			sendOk("Sucesso ao registrar transferência.", w)
 		}
 	}
+}
+
+func sendError(err error, w http.ResponseWriter) {
+	res := models.ReturnMessage{
+		Status:  -1,
+		Message: fmt.Sprintf("Erro : %s", err.Error()),
+	}
+	resByte, _ := json.Marshal(res)
+	fmt.Fprintln(w, string(resByte))
+}
+
+func sendOk(val interface{}, w http.ResponseWriter) {
+	valJson, _ := json.Marshal(val)
+	res := models.ReturnMessage{
+		Status:  0,
+		Message: string(valJson),
+	}
+	resByte, _ := json.Marshal(res)
+	fmt.Fprintln(w, string(resByte))
 }

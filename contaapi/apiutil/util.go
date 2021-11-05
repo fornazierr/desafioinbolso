@@ -68,7 +68,7 @@ func GetConfig() models.Config {
 		c.DB_USER = "postgres"
 	}
 	if c.URL_PORT == "" {
-		c.URL_PORT = "8080"
+		c.URL_PORT = "15001"
 	}
 	if c.URL_HOST == "" {
 		c.URL_HOST = "127.0.0.1"

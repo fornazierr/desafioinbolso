@@ -8,4 +8,4 @@ COPY contaapi .
 
 CMD ["./contaapi"]
 
-EXPOSE 8080
+EXPOSE 15001

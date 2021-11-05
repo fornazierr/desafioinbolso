@@ -11,7 +11,7 @@ import (
 	"transferenciaapi/models"
 )
 
-func getContaBancaria(id int) (models.ContaBancaria, error) {
+func getContaBancariaAPI(id int) (models.ContaBancaria, error) {
 	config := apiutil.GetConfig()
 	var conta models.ContaBancaria
 
