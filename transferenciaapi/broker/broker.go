@@ -200,7 +200,7 @@ func RealizaTransferencia(tr models.Transferencia) error {
 		return err
 	}
 
-	log.Printf(fmt.Sprintf("Preparando transfercia de <%+v> para <%+v>", contaOrigem, contaDestino))
+	log.Printf(fmt.Sprintf("Preparando transfercia de <%+v> para <%+v>\n", contaOrigem, contaDestino))
 
 	return nil
 }
