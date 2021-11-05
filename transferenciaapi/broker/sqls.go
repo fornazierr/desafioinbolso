@@ -9,7 +9,6 @@ func sqlNewSaldo() string {
 }
 
 func sqlUpdateSaldo() string {
-	// UPDATE public.tipos SET descricao='', metadado='', "status"=false, datacriacao=current_timestamp(), dataalteracao=current_timestamp() WHERE codigo='';
 	return "UPDATE public.saldo SET saldo=$1, updated=CURRENT_TIMESTAMP where titular_id=$2 AND conta_id=$3;"
 }
 
@@ -19,4 +18,8 @@ func sqlGetRegistrosSaldo() string {
 
 func sqlRegistroSaldo() string {
 	return "insert into public.registrosaldo (titular_id, conta_id, sinal, valor) values ($1,$2,$3,$4);"
+}
+
+func sqlNewTranferencia() string {
+	return "INSERT INTO public.transferencia (contaorigem_id, contadestino_id, valor, created) VALUES($1, $2, $3, CURRENT_TIMESTAMP);"
 }

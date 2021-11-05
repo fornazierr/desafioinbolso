@@ -188,19 +188,72 @@ func UpdateSaldo(saldo models.Saldo) error {
 
 func RealizaTransferencia(tr models.Transferencia) error {
 	log.Println("RealizaTransferencia: Iniciando operação")
+
+	//buscando a existencia de uma conta de origem
 	contaOrigem, err := getContaBancariaAPI(tr.ContaOrigemId)
 	if err != nil {
 		log.Println("RealizaTransferencia: erro ao buscar conta de origem ::", err.Error())
 		return err
 	}
 
-	contaDestino, err := getContaBancariaAPI(tr.ContaOrigemId)
+	//buscando a existencia de uma conta de destino
+	contaDestino, err := getContaBancariaAPI(tr.ContaDestinoId)
 	if err != nil {
 		log.Println("RealizaTransferencia: erro ao buscar conta de destino ::", err.Error())
 		return err
 	}
 
-	log.Printf(fmt.Sprintf("Preparando transfercia de <%+v> para <%+v>\n", contaOrigem, contaDestino))
+	log.Printf(fmt.Sprintf("Preparando transfercia de %+v para %+v\n", contaOrigem, contaDestino))
+
+	//criando débito na conta de origem
+	debitoOrigem := models.RegistroSaldo{
+		ContaId:   contaOrigem.ID,
+		TitularId: contaOrigem.TitularId,
+		Sinal:     1,
+		Valor:     tr.Valor,
+	}
+
+	//criando crédito na conta de destino
+	creditoDestino := models.RegistroSaldo{
+		ContaId:   contaDestino.ID,
+		TitularId: contaDestino.TitularId,
+		Sinal:     0,
+		Valor:     tr.Valor,
+	}
+
+	//realizando debito
+	err = NewRegistroSaldo(debitoOrigem)
+	if err != nil {
+		log.Println("RealizaTransferencia: erro ao registrar débito ::", err.Error())
+		return err
+	}
+
+	//realizando credito
+	err = NewRegistroSaldo(creditoDestino)
+	if err != nil {
+		log.Println("RealizaTransferencia: erro ao registrar crédito ::", err.Error())
+		return err
+	}
+
+	log.Println("Sucesso ao registrar transação")
+
+	return nil
+}
+
+func NewTransferencia(tr models.Transferencia) error {
+	ctx := context.Background()
+	cn, _ := Pool.Acquire(ctx)
+	defer cn.Release()
+
+	com, err := cn.Exec(ctx, sqlNewTranferencia(), tr.ContaOrigemId, tr.ContaDestinoId, tr.Valor)
+	if err != nil {
+		log.Println("Erro no SQL \"RegistraSaldo\":", err.Error())
+		return err
+	}
+
+	if com.RowsAffected() > 0 {
+		log.Println("Registro salvo com sucesso.")
+	}
 
 	return nil
 }

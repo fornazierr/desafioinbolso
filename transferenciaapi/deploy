@@ -1,6 +1,9 @@
 #!/bin/sh
 echo "Iniciando deploy do Modulo de Trasferencia"
 DEPLOY="transferenciaapi"
+export PATH=$PATH:/usr/local/go/bin
+export CGO_ENABLED=0
+export GOOS=linux
 
 echo "1 - Removendo build anterior"
 rm -f ${DEPLOY}
@@ -40,12 +43,12 @@ EXT_PORT=15001
 export DB_USER="postgres"
 export DB_NAME="inbolso"
 export DB_PASS="12345678"
-export DB_PORT="5432"
-export DB_HOST="inbolsodb"
+export DB_PORT="15432"
+export DB_HOST="localhost"
 export CONTA_API="http://127.0.0.1:15001"
 export BOLETO_API="http://127.0.0.1:15003"
+export HTTP_HOST="localhost"
+export HTTP_PORT="15002"
 
 echo "10 - Iniciando docker ${DEPLOY}"
-docker run --name ${DEPLOY} --hostname ${DEPLOY} -v /var/log:/var/log -p ${EXT_PORT}:${INT_PORT} --env DB_USER --env DB_NAME --env DB_PASS --env DB_HOST --env DB_PORT --env TRANFERENCIA_API -d inbolso/${DEPLOY}:1.0
-docker network connect inbolso ${DEPLOY}
-docker restart ${DEPLOY}
+docker run -d --name ${DEPLOY} --network=host -v /var/log:/var/log -p 0.0.0.0:${EXT_PORT}:${INT_PORT} --env HTTP_HOST --env HTTP_PORT --env DB_USER --env DB_NAME --env DB_PASS --env DB_HOST --env DB_PORT --env CONTA_API --env BOLETO_API inbolso/${DEPLOY}:1.0

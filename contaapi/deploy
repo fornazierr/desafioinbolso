@@ -1,9 +1,9 @@
 #!/bin/sh
 echo "Iniciando deploy do Modulo Conta Bancaria"
 export PATH=$PATH:/usr/local/go/bin
-DEPLOY="contaapi"
 export CGO_ENABLED=0
 export GOOS=linux
+DEPLOY="contaapi"
 
 echo "1 - Removendo build anterior"
 rm -f ${DEPLOY}
@@ -51,7 +51,4 @@ export HTTP_HOST="localhost"
 export HTTP_PORT="15001"
 
 echo "10 - Iniciando docker ${DEPLOY}"
-#docker run --name ${DEPLOY} --network=host -v /var/log:/var/log -p 0.0.0.0:${EXT_PORT}:${INT_PORT} --env HTTP_HOST --env HTTP_PORT --env DB_USER --env DB_NAME --env DB_PASS --env DB_HOST --env DB_PORT --env TRANFERENCIA_API -d inbolso/${DEPLOY}:1.0
 docker run --name ${DEPLOY} --network=host -v /var/log:/var/log -p 0.0.0.0:${EXT_PORT}:${INT_PORT} --env HTTP_HOST --env HTTP_PORT --env DB_USER --env DB_NAME --env DB_PASS --env DB_HOST --env DB_PORT --env TRANFERENCIA_API -d inbolso/${DEPLOY}:1.0
-#docker network connect inbolso ${DEPLOY}
-#docker restart ${DEPLOY}
