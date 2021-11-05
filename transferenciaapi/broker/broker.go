@@ -187,11 +187,22 @@ func UpdateSaldo(saldo models.Saldo) error {
 }
 
 func RealizaTransferencia(tr models.Transferencia) error {
+	log.Println("RealizaTransferencia: Iniciando operação")
 	contaOrigem, err := getContaBancariaAPI(tr.ContaOrigemId)
 	if err != nil {
+		log.Println("RealizaTransferencia: erro ao buscar conta de origem ::", err.Error())
 		return err
 	}
 
+	contaDestino, err := getContaBancariaAPI(tr.ContaOrigemId)
+	if err != nil {
+		log.Println("RealizaTransferencia: erro ao buscar conta de destino ::", err.Error())
+		return err
+	}
+
+	log.Printf(fmt.Sprintf("Preparando transfercia de <%+v> para <%+v>", contaOrigem, contaDestino))
+
+	return nil
 }
 
 func rowsToArraySaldo(rows pgx.Rows) []models.Saldo {
