@@ -31,10 +31,4 @@ Para a geração dos boletos, seria legal gerar uma linha digitável próxima do
 https://gerencianet.com.br/blog/campos-dos-boletos-linha-digitavel/
 http://www.sicadi.com.br/mhouse/boleto/geraboleto.php
 
-A data de entrega para o teste está para até domingo dia 2021-11-07 até meia noite.
-Para entrega, pode enviar um email de volta para mim, tendo o link do repositório no github. Só lembra de colocar no readme as instruções para executar o código, e alguma explicação se achar necessário.
-Para os requisitos técnicos, a sugestão é que seja feito em NestJs e Postgres como banco de dados.
-
-Fique a vontade para me mandar perguntas se ficar alguma dúvida.
-
-Ao ler, me envia um email de resposta confirmando que esse foi recebido. 
+## Instruções
