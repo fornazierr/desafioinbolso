@@ -28,7 +28,8 @@
 					"path": [
 						"saveboleto"
 					]
-				}
+				},
+				"description": "Requisição para realizar a gravação de um novo boleto, junto ao seu código de barras e linha digitável.\nAlém dos itens informados no body JSON da requisição, é possível adicionar também os seguintes campos:\n- contaorigemid: inteiro, representa o id de uma conta de origem.\n- contadestinoid: inteiro, representa o id de uma conta de destino."
 			},
 			"response": [
 				{
@@ -85,7 +86,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"id\": 2,\n    \"codbanco\": \"033\",\n    \"agencia\": \"3381\",\n    \"carteira\": \"63\",\n    \"contaoorigem\": 1\n}",
+					"raw": "{\n    \"id\": 1,\n    \"codbanco\": \"001\",\n    \"agencia\": \"001\",\n    \"carteira\": \"01\",\n    \"contaoorigem\": 1\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -101,7 +102,8 @@
 					"path": [
 						"getboleto"
 					]
-				}
+				},
+				"description": "Pesquisa por boletos existente no sistema. Todos os itens informados no body JSON da requisição serverm para uma etapa desta pesquisa, funciona como um filto:\n1 -> Primeiro pesquisa por um boleto informando o ID ao qual foi atribuido ao gerá-lo.\n2 -> Caso não consiga, junta as informações de códdigo de banco, agencia e carteira.\n3 -> Caso não funcione também, busca pelo ID da conta de origem."
 			},
 			"response": [
 				{
@@ -165,7 +167,8 @@
 					"path": [
 						"getallboleto"
 					]
-				}
+				},
+				"description": "Requisição que retorna todos os boletos gerados pelo sistema."
 			},
 			"response": []
 		}

@@ -23,7 +23,8 @@
 					"path": [
 						"titular"
 					]
-				}
+				},
+				"description": "Requisição que retorna todos os titulares cadastrados no sistema"
 			},
 			"response": []
 		},
@@ -42,7 +43,8 @@
 						"titular",
 						"1"
 					]
-				}
+				},
+				"description": "Retorna um titular passando o seu id na requisição."
 			},
 			"response": []
 		},
@@ -69,7 +71,8 @@
 					"path": [
 						"titular"
 					]
-				}
+				},
+				"description": "Requisição que cria um novo titular no sistema. Todos os campos necessários estão no body da requisição.\nE importante, a data de nascimento deve ser passada no formato `yyyy-MM-dd`."
 			},
 			"response": [
 				{
@@ -127,7 +130,8 @@
 					"path": [
 						"titular"
 					]
-				}
+				},
+				"description": "Requisição que edita um novo titular no sistema. Todos os campos necessários estão no body da requisição.\nÉ igual à requisição de criação, a diferença é que para editar um usuário deve-se passar o ID deste junto da requisição."
 			},
 			"response": [
 				{
@@ -185,7 +189,8 @@
 					"path": [
 						"titular"
 					]
-				}
+				},
+				"description": "Requisição para deletar um titular do sistema. Deve-se passar o seu ID e seu CPF para realizar a sua exclusão, como descritos no body da requisição."
 			},
 			"response": [
 				{
@@ -235,7 +240,8 @@
 						"titular",
 						"1"
 					]
-				}
+				},
+				"description": "Requisição para deletar um titular por seu ID, basta passá-lo como na parâmetro na requisição."
 			},
 			"response": []
 		},
@@ -253,7 +259,8 @@
 					"path": [
 						"contabancaria"
 					]
-				}
+				},
+				"description": "Requisição que retornar todas as contas bancárias registradas no sistema."
 			},
 			"response": []
 		},
@@ -272,7 +279,8 @@
 						"contabancaria",
 						"1"
 					]
-				}
+				},
+				"description": "Requisição que retorna uma conta bancária passando o seu id como parâmetro na requisição."
 			},
 			"response": []
 		},
@@ -299,7 +307,8 @@
 					"path": [
 						"contabancaria"
 					]
-				}
+				},
+				"description": "Realiza o cadastro de uma conta bancária, todos os parâmetros necessários estão no body JSON da requisição.\nÉ necessário de uma titular já cadastrado no sistema para que possa realizar a criação da conta.\nAo criar uma conta bancária é atribuido um objeto saldo que representa o valor total a partir das transações e registros de valores feitos na conta."
 			},
 			"response": [
 				{
@@ -357,7 +366,8 @@
 					"path": [
 						"contabancaria"
 					]
-				}
+				},
+				"description": "Requisição que exlui uma conta bancária passando o seu id no body JSON da requisição."
 			},
 			"response": [
 				{
@@ -397,15 +407,6 @@
 			"request": {
 				"method": "DELETE",
 				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"ID\": 3\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
 				"url": {
 					"raw": "localhost:15001/contabancaria/1",
 					"host": [
@@ -416,7 +417,8 @@
 						"contabancaria",
 						"1"
 					]
-				}
+				},
+				"description": "Requisição que exclui uma conta bancária passando o seu id como parâmetro na requisição."
 			},
 			"response": []
 		}

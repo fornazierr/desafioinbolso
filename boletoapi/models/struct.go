@@ -23,8 +23,8 @@ type Boleto struct {
 
 type BoletoRequest struct {
 	ID                 int     `json:"id"`
-	ContaOrigemId      int     `json:"contaorigem"`
-	ContaDestinoId     int     `json:"contadestino"`
+	ContaOrigemId      int     `json:"contaorigemid"`
+	ContaDestinoId     int     `json:"contadestinoid"`
 	CodigoBanco        string  `json:"codbanco"`
 	Agencia            int32   `json:"agencia"`
 	Carteira           int16   `json:"carteira"`

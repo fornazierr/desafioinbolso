@@ -57,4 +57,4 @@ para realizar um deploy separado de cada aplicação.
 Garanta que cada arquivo `deploy` tenha a permissão de executar, um `chmod +x deploy` já resolve.
 Caso queira excluir todos as imagens e containers existe um arquivo chamado `undeploy` na raiz de, que exclui todas estas peculiaridades.
 
-Exportei via `Postman`, todos os endpoints desenvolvidos para facilitar o teste da APIs
+Exportei via `Postman`, todos os endpoints desenvolvidos para facilitar o teste da APIs, os mesmos contém uma documentação integrada à requisição para poder sanar sobre o que a mesma raliza no sistema.

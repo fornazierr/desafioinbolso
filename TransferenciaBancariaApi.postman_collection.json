@@ -28,7 +28,8 @@
 					"path": [
 						"newregistrosaldo"
 					]
-				}
+				},
+				"description": "Requisição realizada para adicionar um saldo à uma conta existente.\nO sinal indica:\n- 0 = creditar valor\n- 1 = debitar valor\n\nTodos os campos necessários já estão dentro da requisição JSON."
 			},
 			"response": [
 				{
@@ -70,7 +71,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"titularid\": 5,\n    \"contaid\": 4,\n    \"sinal\": 0,\n    \"valor\": 1.00\n}",
+					"raw": "{\n    \"titularid\": 1,\n    \"contaid\": 1\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -86,7 +87,8 @@
 					"path": [
 						"newsaldo"
 					]
-				}
+				},
+				"description": "Realiza a criação de um objeto saldo, o mesmo objeto representa uma representação do total de dinheiro de uma conta.\nToda vez que uma conta bancaria é criada, um saldo é criado e vinculado.\nPara criar um saldo basta informar o ID do titular e o id da sua conta criada conforme JSON salvo na requisição."
 			},
 			"response": [
 				{
@@ -128,7 +130,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"titularid\": 2,\n    \"contaid\": 2\n}",
+					"raw": "{\n    \"titularid\": 1,\n    \"contaid\": 1\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -144,7 +146,8 @@
 					"path": [
 						"getsaldo"
 					]
-				}
+				},
+				"description": "Retorna o saldo total de uma conta bancária informando o id do titular e o id da conta conforme o JSON do body."
 			},
 			"response": [
 				{
@@ -186,7 +189,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"titularid\": 5,\n    \"contaid\": 4\n}",
+					"raw": "{\n    \"titularid\": 1,\n    \"contaid\": 1\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -203,7 +206,7 @@
 						"getregistrosaldo"
 					]
 				},
-				"description": "Retorna todos dos registros de saldo feitos de uma conta"
+				"description": "Retorna todos dos registros de saldo feitos de uma conta bancária, a partir do id do titular e o id de sua conta bancária. Os campos necessários estão salvos no JSON."
 			},
 			"response": [
 				{
@@ -261,7 +264,8 @@
 					"path": [
 						"realizatransferencia"
 					]
-				}
+				},
+				"description": "Realiza a tranferêcia de valor de uma conta de origem para uma conta de destino. \nE toda vez que uma transferência é realizada, é realizado um débito (registro de saldo) na conta de quem envia e um crédito (registro de saldo) na conta de quem recebe. Os valores necessários estão no body da requisição."
 			},
 			"response": [
 				{
