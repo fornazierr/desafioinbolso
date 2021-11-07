@@ -4,6 +4,7 @@ import (
 	"boletoapi/apiutil"
 	"boletoapi/models"
 	"context"
+	"errors"
 	"fmt"
 	"log"
 	"sync"
@@ -55,6 +56,28 @@ func NewBoleto(bol models.BoletoRequest) error {
 	log.Println("NewBoleto: realizando chamada")
 	var modelo models.MontaBoleto
 
+	if bol.ContaOrigemId > 0 {
+		existe, err := verificaContaBancaria(bol.ContaOrigemId)
+		if err != nil {
+			log.Println("NewBoleto:erro verificando exitencia da conta de origem:", err.Error())
+			return err
+		}
+		if !existe {
+			return errors.New("conta de origem não existe")
+		}
+	}
+
+	if bol.ContaDestinoId > 0 {
+		existe, err := verificaContaBancaria(bol.ContaDestinoId)
+		if err != nil {
+			log.Println("NewBoleto:erro verificando exitencia da conta de destino:", err.Error())
+			return err
+		}
+		if !existe {
+			return errors.New("conta de destino não existe")
+		}
+	}
+
 	log.Println("Iniciando montagem de boleto")
 	modelo.CodigoBanco = bol.CodigoBanco
 	modelo.Agencia = fmt.Sprintf("%04d", bol.Agencia)
@@ -104,6 +127,17 @@ func NewBoleto(bol models.BoletoRequest) error {
 	}
 
 	return nil
+}
+
+//Função que busca
+func verificaContaBancaria(contaId int) (bool, error) {
+	_, err := apiGetContaBancaria(contaId)
+	if err != nil {
+		log.Println("verificaContaBancaria: erro resgatando conta: ", err.Error())
+		return false, err
+	}
+
+	return true, nil
 }
 
 //(contaorigem_id, contadestino_id, codigobanco, agencia, carteira, datavencimento, valor, nossonumero, codigobeneficiario, linhadigitavel, codigobarras)

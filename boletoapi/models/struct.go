@@ -141,3 +141,37 @@ type ReturnMessage struct {
 	Status  int    `json:"status"`
 	Message string `json:"message"`
 }
+
+type ContaBancaria struct {
+	ID          int    `json:"id"`
+	CodigoBanco int    `json:"codigobanco"`
+	Agencia     string `json:"agencia"`
+	Conta       string `json:"conta"`
+	Digito      string `json:"digito"`
+	TitularId   int    `json:"titularid"`
+}
+
+func (cb *ContaBancaria) Erros() error {
+	erros := ""
+	if cb.Agencia == "" {
+		erros += "\"agencia\" vazio."
+	}
+	if cb.CodigoBanco < 1 {
+		erros += "\"codigobanco\" vazio."
+	}
+	if cb.Conta == "" {
+		erros += "\"conta\" vazio."
+	}
+	if cb.Digito == "" {
+		erros += "\"digito\" vazio."
+	}
+	if cb.TitularId < 1 {
+		erros += "\"id\" vazio."
+	}
+
+	if erros != "" {
+		return errors.New(erros)
+	} else {
+		return nil
+	}
+}
