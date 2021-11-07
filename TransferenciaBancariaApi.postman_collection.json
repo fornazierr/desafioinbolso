@@ -1,0 +1,300 @@
+{
+	"info": {
+		"_postman_id": "7123014b-d67c-4959-bd10-ef0f09484c74",
+		"name": "TransferenciaBancariaApi",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "NovoRegistroSaldo",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"titularid\": 1,\n    \"contaid\": 1,\n    \"sinal\": 0,\n    \"valor\": 601.98\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:15002/newregistrosaldo",
+					"host": [
+						"localhost"
+					],
+					"port": "15002",
+					"path": [
+						"newregistrosaldo"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "NovoRegistroSaldo",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"titularid\": 1,\n    \"contaid\": 1,\n    \"sinal\": 0,\n    \"valor\": 601.98\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:15002/newregistrosaldo",
+							"host": [
+								"localhost"
+							],
+							"port": "15002",
+							"path": [
+								"newregistrosaldo"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				}
+			]
+		},
+		{
+			"name": "NovoSaldo",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"titularid\": 5,\n    \"contaid\": 4,\n    \"sinal\": 0,\n    \"valor\": 1.00\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:15002/newsaldo",
+					"host": [
+						"localhost"
+					],
+					"port": "15002",
+					"path": [
+						"newsaldo"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "NovoSaldo",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"titularid\": 5,\n    \"contaid\": 4,\n    \"sinal\": 0,\n    \"valor\": 1.00\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:15002/newsaldo",
+							"host": [
+								"localhost"
+							],
+							"port": "15002",
+							"path": [
+								"newsaldo"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				}
+			]
+		},
+		{
+			"name": "GetSaldo",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"titularid\": 2,\n    \"contaid\": 2\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:15002/getsaldo",
+					"host": [
+						"localhost"
+					],
+					"port": "15002",
+					"path": [
+						"getsaldo"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "GetSaldo",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"titularid\": 2,\n    \"contaid\": 2\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:15002/getsaldo",
+							"host": [
+								"localhost"
+							],
+							"port": "15002",
+							"path": [
+								"getsaldo"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				}
+			]
+		},
+		{
+			"name": "GetRegistrosSaldo",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"titularid\": 5,\n    \"contaid\": 4\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:15002/getregistrosaldo",
+					"host": [
+						"localhost"
+					],
+					"port": "15002",
+					"path": [
+						"getregistrosaldo"
+					]
+				},
+				"description": "Retorna todos dos registros de saldo feitos de uma conta"
+			},
+			"response": [
+				{
+					"name": "GetRegistrosSaldo",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"titularid\": 5,\n    \"contaid\": 4\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:15002/getregistrosaldo",
+							"host": [
+								"localhost"
+							],
+							"port": "15002",
+							"path": [
+								"getregistrosaldo"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				}
+			]
+		},
+		{
+			"name": "RealizaTransferencia",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"contaorigemid\": 1,\n    \"contadestinoid\": 2,\n    \"valor\": 300.99\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:15002/realizatransferencia",
+					"host": [
+						"localhost"
+					],
+					"port": "15002",
+					"path": [
+						"realizatransferencia"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "RealizaTransferencia",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"contaorigemid\": 1,\n    \"contadestinoid\": 2,\n    \"valor\": 300.99\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:15002/realizatransferencia",
+							"host": [
+								"localhost"
+							],
+							"port": "15002",
+							"path": [
+								"realizatransferencia"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				}
+			]
+		}
+	]
+}

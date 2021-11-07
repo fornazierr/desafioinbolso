@@ -1,0 +1,424 @@
+{
+	"info": {
+		"_postman_id": "ecaa7a4c-213c-4718-8238-8361fdd220af",
+		"name": "ContaBancariaApi",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "GetAllTitular",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {},
+				"strictSSL": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:15001/titular",
+					"host": [
+						"localhost"
+					],
+					"port": "15001",
+					"path": [
+						"titular"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetTitularById",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:15001/titular/1",
+					"host": [
+						"localhost"
+					],
+					"port": "15001",
+					"path": [
+						"titular",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PostNovoTitular",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"Nome\": \"david\",\n    \"CPF\": \"98765432101\",\n    \"Email\": \"david@email.com\",\n    \"Nascimento\": \"1997-07-13\",\n    \"NomePai\": \"Jairo\",\n    \"NomeMae\": \"Celia\",\n    \"Cidade\": \"Porto Velhor\",\n    \"Estado\": \"RO\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:15001/titular",
+					"host": [
+						"localhost"
+					],
+					"port": "15001",
+					"path": [
+						"titular"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "PostNovoTitular",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"Nome\": \"david\",\n    \"CPF\": \"98765432101\",\n    \"Email\": \"david@email.com\",\n    \"Nascimento\": \"1997-07-13\",\n    \"NomePai\": \"Jairo\",\n    \"NomeMae\": \"Celia\",\n    \"Cidade\": \"Porto Velhor\",\n    \"Estado\": \"RO\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:15001/titular",
+							"host": [
+								"localhost"
+							],
+							"port": "15001",
+							"path": [
+								"titular"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				}
+			]
+		},
+		{
+			"name": "PostEditTitular",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"ID\": 2,\n    \"Nome\": \"David\",\n    \"CPF\": \"12345678901\",\n    \"Email\": \"david@email.com\",\n    \"Nascimento\": \"1998-02-11\",\n    \"NomePai\": \"Nao Tem\",\n    \"NomeMae\": \"Vania\",\n    \"Cidade\": \"Capiaba\",\n    \"Estado\": \"Rondonia\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:15001/titular",
+					"host": [
+						"localhost"
+					],
+					"port": "15001",
+					"path": [
+						"titular"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "PostEditTitular",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"ID\": 2,\n    \"Nome\": \"David\",\n    \"CPF\": \"12345678901\",\n    \"Email\": \"David@email.com\",\n    \"Nascimento\": \"1998-02-11\",\n    \"NomePai\": \"Jairin\",\n    \"NomeMae\": \"Celia\",\n    \"Cidade\": \"Capiaba\",\n    \"Estado\": \"Rondonia\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:15001/titular",
+							"host": [
+								"localhost"
+							],
+							"port": "15001",
+							"path": [
+								"titular"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				}
+			]
+		},
+		{
+			"name": "DeleteTitular",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"ID\": 1,\n    \"CPF\": \"12345678901\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:15001/titular",
+					"host": [
+						"localhost"
+					],
+					"port": "15001",
+					"path": [
+						"titular"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "DeleteTitular",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"ID\": 1,\n    \"CPF\": \"12345678901\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:15001/titular",
+							"host": [
+								"localhost"
+							],
+							"port": "15001",
+							"path": [
+								"titular"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				}
+			]
+		},
+		{
+			"name": "DeleteTitularById",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:15001/titular/1",
+					"host": [
+						"localhost"
+					],
+					"port": "15001",
+					"path": [
+						"titular",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetAllContaBancaria",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:15001/contabancaria",
+					"host": [
+						"localhost"
+					],
+					"port": "15001",
+					"path": [
+						"contabancaria"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetAllContaBancariaById",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:15001/contabancaria/1",
+					"host": [
+						"localhost"
+					],
+					"port": "15001",
+					"path": [
+						"contabancaria",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "SaveContaBancaria",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"codigobanco\": 1,\n    \"agencia\": \"001\",\n    \"conta\": \"0002\",\n    \"digito\": \"9\",\n    \"titularid\":2\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:15001/contabancaria",
+					"host": [
+						"localhost"
+					],
+					"port": "15001",
+					"path": [
+						"contabancaria"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "SaveContaBancaria",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"codigobanco\": 1,\n    \"agencia\": \"001\",\n    \"conta\": \"0002\",\n    \"digito\": \"9\",\n    \"titularid\":2\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:15001/contabancaria",
+							"host": [
+								"localhost"
+							],
+							"port": "15001",
+							"path": [
+								"contabancaria"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				}
+			]
+		},
+		{
+			"name": "DeleteContaBancaria",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"ID\": 3\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:15001/contabancaria",
+					"host": [
+						"localhost"
+					],
+					"port": "15001",
+					"path": [
+						"contabancaria"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "DeleteContaBancaria",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"ID\": 3\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:15001/contabancaria",
+							"host": [
+								"localhost"
+							],
+							"port": "15001",
+							"path": [
+								"contabancaria"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				}
+			]
+		},
+		{
+			"name": "DeleteContaBancariaById",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"ID\": 3\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:15001/contabancaria/1",
+					"host": [
+						"localhost"
+					],
+					"port": "15001",
+					"path": [
+						"contabancaria",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

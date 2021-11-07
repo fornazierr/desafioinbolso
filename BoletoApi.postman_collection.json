@@ -1,0 +1,173 @@
+{
+	"info": {
+		"_postman_id": "85d6734c-c7e6-4081-a04c-05244f69ea41",
+		"name": "BoletoApi",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "NovoBoleto",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"agencia\":1234,\n    \"carteira\":1,\n    \"datavencimento\": \"2021-11-07\",\n    \"valor\":439.77,\n    \"nossonumero\":\"1234154617\",\n    \"codbanco\":\"001\",\n    \"codbeneficiario\":7989\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:15003/saveboleto",
+					"host": [
+						"localhost"
+					],
+					"port": "15003",
+					"path": [
+						"saveboleto"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "NovoBoleto",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"agencia\":1234,\n    \"carteira\":1,\n    \"datavencimento\": \"2021-11-07\",\n    \"valor\":439.77,\n    \"nossonumero\":\"1234154617\",\n    \"codbanco\":\"001\",\n    \"codbeneficiario\":7989\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:15003/saveboleto",
+							"host": [
+								"localhost"
+							],
+							"port": "15003",
+							"path": [
+								"saveboleto"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "plain",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Sun, 07 Nov 2021 11:58:00 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "60"
+						},
+						{
+							"key": "Content-Type",
+							"value": "text/plain; charset=utf-8"
+						}
+					],
+					"cookie": [],
+					"body": "{\"status\":0,\"message\":\"\\\"Gravado/Atualizado com sucesso\\\"\"}\n"
+				}
+			]
+		},
+		{
+			"name": "PesquisaBoleto",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": 2,\n    \"codbanco\": \"033\",\n    \"agencia\": \"3381\",\n    \"carteira\": \"63\",\n    \"contaoorigem\": 1\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:15003/getboleto",
+					"host": [
+						"localhost"
+					],
+					"port": "15003",
+					"path": [
+						"getboleto"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "PesquisaBoleto",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 2,\n    \"codbanco\": \"033\",\n    \"agencia\": \"3381\",\n    \"carteira\": \"63\",\n    \"contaoorigem\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:15003/getboleto",
+							"host": [
+								"localhost"
+							],
+							"port": "15003",
+							"path": [
+								"getboleto"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "plain",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Sun, 07 Nov 2021 12:03:10 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "389"
+						},
+						{
+							"key": "Content-Type",
+							"value": "text/plain; charset=utf-8"
+						}
+					],
+					"cookie": [],
+					"body": "{\"status\":0,\"message\":\"[{\\\"id\\\":2,\\\"contaorigem\\\":0,\\\"contadestino\\\":0,\\\"codbanco\\\":\\\"001\\\",\\\"agencia\\\":\\\"1234\\\",\\\"carteira\\\":\\\"01\\\",\\\"datavencimento\\\":\\\"2021-11-07\\\",\\\"valor\\\":439.77,\\\"nossonumero\\\":\\\"01234154617\\\",\\\"codbeneficiario\\\":\\\"0007989\\\",\\\"codigobarras\\\":\\\"00197879700000439771234010123415461700079890\\\",\\\"linhadigitavel\\\":\\\"00191234051012341546817000798901787970000043977\\\"}]\"}\n"
+				}
+			]
+		},
+		{
+			"name": "GetAllboleto",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:15003/getallboleto",
+					"host": [
+						"localhost"
+					],
+					"port": "15003",
+					"path": [
+						"getallboleto"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

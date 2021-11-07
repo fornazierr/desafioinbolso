@@ -1,28 +1,40 @@
 # README Desafio Tecnico inBolso
 
 ## Proposta
-1) - Criar um módulo de gerenciamento de contas bancárias
 
-/*
-Informações do titular
-Nome, cpf, data de nascimento, nome do pai, nome da mãe, cidade, estado...
-Informações da conta
-Código do banco, Agência, Conta, Dígito...
-*/
+#### Criar um módulo de gerenciamento de contas bancárias
 
-1 - API para criar conta bancária
-2 - API para editar dados
-3 - API para excluir conta
+##### Informações do titular
+ - Nome
+ - cpf
+ - data de nascimento
+ - nome do pai
+ - nome da mãe
+ - cidade
+ - estado...
 
-2) - Criar um módulo de transferência bancária
+##### Informações da conta
+ - Código do banco
+ - Agência
+ - Conta
+ - Dígito
 
-// Seria legal adicionar aqui também uma opção de adicionar saldo a conta, para testes.
+##### Informações da API
+- API para criar conta bancária
+- API para editar dados
+- API para excluir conta
 
-1 - API para consultar saldo da conta
-2 - API para fazer transferências de uma conta para outra
+#### Criar um módulo de transferência bancária
 
-3) - Criar um módulo de geração de boletos
 
+##### Informações da API
+- API para consultar saldo da conta
+- API para fazer transferências de uma conta para outra
+Obs: Seria legal adicionar aqui também uma opção de adicionar saldo a conta, para testes.
+
+#### Criar um módulo de geração de boletos
+
+##### Informações da API
 1 - API para criar um boleto bancário (sem necessidade de criar o pdf, só os dados mesmo).
 2 - API para verificar dados de um boleto já gerado
 

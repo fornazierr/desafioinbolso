@@ -55,7 +55,7 @@ func apiGetContaBancaria(id int) (models.ContaBancaria, error) {
 
 		if len(aux) < 1 {
 			msgErr := fmt.Sprintf("getContaBancariaAPI: nenhuma conta encontrada para o ID fornecido [%d]\n", id)
-			log.Printf(msgErr)
+			log.Println(msgErr)
 			return conta, errors.New(msgErr)
 		}
 
@@ -113,7 +113,7 @@ func apiGetTitular(id int) (models.Titular, error) {
 
 		if len(aux) < 1 {
 			msgErr := fmt.Sprintf("apiGetTitular: nenhuma conta encontrada para o ID fornecido [%d]\n", id)
-			log.Printf(msgErr)
+			log.Println(msgErr)
 			return conta, errors.New(msgErr)
 		}
 
