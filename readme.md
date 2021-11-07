@@ -2,7 +2,7 @@
 
 ## Proposta
 
-#### Criar um módulo de gerenciamento de contas bancárias
+#### 1 - Criar um módulo de gerenciamento de contas bancárias
 
 ##### Informações do titular
  - Nome
@@ -24,15 +24,16 @@
 - API para editar dados
 - API para excluir conta
 
-#### Criar um módulo de transferência bancária
+#### 2 - Criar um módulo de transferência bancária
 
 
 ##### Informações da API
 - API para consultar saldo da conta
 - API para fazer transferências de uma conta para outra
+
 Obs: Seria legal adicionar aqui também uma opção de adicionar saldo a conta, para testes.
 
-#### Criar um módulo de geração de boletos
+#### 3 - Criar um módulo de geração de boletos
 
 ##### Informações da API
 - API para criar um boleto bancário (sem necessidade de criar o pdf, só os dados mesmo).
