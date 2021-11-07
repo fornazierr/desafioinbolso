@@ -24,8 +24,8 @@ func InitBroker() {
 	var connStr string = apiutil.GetUrlConnection()
 	log.Printf("Url de conexao: %s\n", connStr)
 	config, err := pgxpool.ParseConfig(connStr)
-	config.MaxConns = 10
-	config.MinConns = 2
+	config.MaxConns = 3
+	config.MinConns = 1
 	config.MaxConnIdleTime = 2 * time.Minute
 	config.MaxConnLifetime = 2 * time.Minute
 

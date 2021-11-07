@@ -122,6 +122,7 @@ type Config struct {
 	URL_PORT         string `json:"urlport"`
 	URL_HOST         string `json:"urlhost"`
 	TRANFERENCIA_API string `json:"transferenciaapi"`
+	BOLETO_API       string `json:"boletoapi"`
 }
 
 type ReturnMessage struct {

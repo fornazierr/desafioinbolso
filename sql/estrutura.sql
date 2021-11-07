@@ -360,3 +360,44 @@ CREATE TABLE if not exists public.transferencia (
 
 ALTER TABLE public.transferencia ADD CONSTRAINT transferencia_contadestino_id_fkey FOREIGN KEY (contadestino_id) REFERENCES public.contabancaria(id);
 ALTER TABLE public.transferencia ADD CONSTRAINT transferencia_contaorigem_id_fkey FOREIGN KEY (contaorigem_id) REFERENCES public.contabancaria(id);
+
+
+-- public.boleto definition
+
+-- Drop table
+
+-- DROP TABLE public.boleto;
+
+CREATE TABLE public.boleto (
+	"int" serial NOT NULL,
+	banco int NULL,
+	localpagamento text NULL,
+	cedente text NULL,
+	datadocumento date NULL,
+	numerodocumento text NULL,
+	especie text NULL,
+	aceite text NULL,
+	dataprocessamento date NULL,
+	usobanco text NULL,
+	carteira text NULL,
+	especiemoeda text NULL,
+	quantidade numeric(10, 4) NULL,
+	valor numeric(10, 4) NULL,
+	vencimento date NULL,
+	agencia text NULL,
+	conta text NULL,
+	digito text NULL,
+	seunumero text NULL,
+	valordocumento numeric(10, 4) NULL,
+	instrucao text NULL,
+	mensagem1 text NULL,
+	mensagem2 text NULL,
+	mensagem3 text NULL,
+	sacado text NULL,
+	CONSTRAINT boleto_pkey PRIMARY KEY ("int")
+);
+
+
+-- public.boleto foreign keys
+
+ALTER TABLE public.boleto ADD CONSTRAINT boleto_banco_fkey FOREIGN KEY (banco) REFERENCES public.bancos(cod);
