@@ -1,4 +1,4 @@
-# README Desafio Tecnico inBolso
+# Desafio Tecnico inBolso
 
 ## Proposta
 
