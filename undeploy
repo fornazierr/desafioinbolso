@@ -1,7 +1,36 @@
 #!/bin/bash
 
-echo "Realizando o UNDEPLOY de TODOS os módulos de bancos"
+echo "Realizando o UNDEPLOY de TODOS os módulos e base de dados"
 
 DB="inbolsodb"
-MOD1="contabancariaapi"
-MOD2=""
+MOD1="contaapi"
+MOD2="transferenciaapi"
+MOD3="boletoapi"
+
+echo "------------------------------"
+echo "Realizando undeploy de ${DB}"
+echo "------------------------------"
+docker stop ${DB}
+docker rm ${DB}
+docker rmi inbolso/${DB}:1.0
+
+echo "------------------------------"
+echo "Realizando undeploy de ${MOD1}"
+echo "------------------------------"
+docker stop ${MOD1}
+docker rm ${MOD1}
+docker rmi inbolso/${MOD1}:1.0
+
+echo "------------------------------"
+echo "Realizando undeploy de ${MOD2}"
+echo "------------------------------"
+docker stop ${MOD2}
+docker rm ${MOD2}
+docker rmi inbolso/${MOD2}:1.0
+
+echo "------------------------------"
+echo "Realizando undeploy de ${MOD2}"
+echo "------------------------------"
+docker stop ${MOD2}
+docker rm ${MOD2}
+docker rmi inbolso/${MOD2}:1.0

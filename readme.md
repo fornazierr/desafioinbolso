@@ -31,4 +31,15 @@ Para a geração dos boletos, seria legal gerar uma linha digitável próxima do
 https://gerencianet.com.br/blog/campos-dos-boletos-linha-digitavel/
 http://www.sicadi.com.br/mhouse/boleto/geraboleto.php
 
+## Requisitos
+Será bom ter os seguintes itens instalado em sua máquina:
+
+- Golang 1.17+
+- Docker 19+
+- Ambiente linux
+
 ## Instruções
+Depois de realizar o download do projeto, dentro de cada pasta há um arquivo chamado `deploy`, o qual realiza o build do módulo referente e cria uma imagem docker
+para realizar um deploy separado de cada aplicação.
+Garanta que cada arquivo `deploy` tenha a permissão de executar, um `chmod +x deploy` já resolve.
+Caso queira excluir todos as imagens e containers existe um arquivo chamado `undeploy` na raiz de, que exclui todas estas peculiaridades.

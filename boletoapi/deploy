@@ -1,6 +1,9 @@
 #!/bin/bash
 
 DEPLOY="boletoapi"
+export PATH=$PATH:/usr/local/go/bin
+export CGO_ENABLED=0
+export GOOS=linux
 
 echo "1 - Removendo build anterior"
 rm -f ${DEPLOY}
