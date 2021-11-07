@@ -4,6 +4,7 @@ import (
 	"contaapi/apiutil"
 	"contaapi/models"
 	"context"
+	"errors"
 	"fmt"
 	"log"
 	"sync"
@@ -108,11 +109,21 @@ func PostTitular(titular models.Titular) error {
 
 //(nome, cpf, email, nascimento, nomepai, nomemae, cidade, estado)
 func newTitular(titular models.Titular) error {
+	//verifica a exitencia de outro cadastro já feito
+	res, err := getTitularByCPF(titular.CPF)
+	if err != nil {
+		log.Println("Erro verificando existencia de titular antes da criacao:", err.Error())
+		return err
+	}
+	if res {
+		return errors.New(fmt.Sprintf("titular já cadastrado para o CPF: %s", titular.CPF))
+	}
+
 	ctx := context.Background()
 	cn, _ := Pool.Acquire(ctx)
 	defer cn.Release()
 
-	_, err := cn.Exec(context.Background(), sqlNewTitular(), titular.Nome, titular.CPF, titular.Email, titular.Nascimento, titular.NomePai, titular.NomeMae, titular.Cidade, titular.Estado)
+	_, err = cn.Exec(context.Background(), sqlNewTitular(), titular.Nome, titular.CPF, titular.Email, titular.Nascimento, titular.NomePai, titular.NomeMae, titular.Cidade, titular.Estado)
 	if err != nil {
 		return nil
 	}
@@ -125,7 +136,7 @@ func updateTitular(titular models.Titular) error {
 	cn, _ := Pool.Acquire(ctx)
 	defer cn.Release()
 
-	_, err := cn.Exec(context.Background(), sqlUpdateTitular(), titular.Nome, titular.CPF, titular.Email, titular.Nascimento, titular.NomePai, titular.NomeMae, titular.Cidade, titular.Estado, titular.ID)
+	_, err := cn.Exec(ctx, sqlUpdateTitular(), titular.Nome, titular.CPF, titular.Email, titular.Nascimento, titular.NomePai, titular.NomeMae, titular.Cidade, titular.Estado, titular.ID)
 	if err != nil {
 		return nil
 	}
@@ -133,12 +144,42 @@ func updateTitular(titular models.Titular) error {
 	return nil
 }
 
-func DeleteTitular(titular models.Titular) error {
+func getTitularByCPF(cpf string) (bool, error) {
 	ctx := context.Background()
 	cn, _ := Pool.Acquire(ctx)
 	defer cn.Release()
 
-	_, err := cn.Exec(context.Background(), sqlDeleteTitular(), titular.ID)
+	rows, err := cn.Query(ctx, sqlEncontraTitularByCPDF(), cpf)
+	if err != nil {
+		return false, err
+	}
+
+	encontrado := false
+	for rows.Next() {
+		doc := ""
+		rows.Scan(&doc)
+		if doc == cpf {
+			encontrado = true
+		}
+	}
+	return encontrado, nil
+}
+
+func DeleteTitular(titular models.Titular) error {
+	res, err := GetTitularById(titular.ID)
+	if err != nil {
+		log.Println("Erro verificando existencia de titular antes da exclusao:", err.Error())
+		return err
+	}
+	if len(*res) < 1 {
+		return errors.New("titular não encontrado para exclusao")
+	}
+
+	ctx := context.Background()
+	cn, _ := Pool.Acquire(ctx)
+	defer cn.Release()
+
+	_, err = cn.Exec(ctx, sqlDeleteTitular(), titular.ID)
 	if err != nil {
 		return nil
 	}
@@ -151,7 +192,7 @@ func GetContaBancaria() (*[]models.ContaBancaria, error) {
 	cn, _ := Pool.Acquire(ctx)
 	defer cn.Release()
 
-	rows, err := cn.Query(context.Background(), slqGetContaBancaria())
+	rows, err := cn.Query(ctx, slqGetContaBancaria())
 	if err != nil {
 		log.Println("Erro no SQL \"GetContaBancaria\":", err.Error())
 		return nil, err
@@ -189,11 +230,19 @@ func GetContaBancariaById(id int) (*[]models.ContaBancaria, error) {
 }
 
 func SaveContaBancaria(cb models.ContaBancaria) error {
+	res, err := GetTitularById(cb.TitularId)
+	if err != nil {
+		log.Println("Erro verificando existencia de titular antes da criar nova conta bancaria:", err.Error())
+		return err
+	}
+	if len(*res) < 1 {
+		return errors.New("titular não encontrado para criar conta bancaria")
+	}
+
 	ctx := context.Background()
 	cn, _ := Pool.Acquire(ctx)
 	defer cn.Release()
 
-	// _, err := cn.Exec(context.Background(), sqlNewContaBancaria(), cb.CodigoBanco, cb.Agencia, cb.Conta, cb.Digito, cb.TitularId)
 	rows, err := cn.Query(context.Background(), sqlNewContaBancaria(), cb.CodigoBanco, cb.Agencia, cb.Conta, cb.Digito, cb.TitularId)
 	if err != nil {
 		return err
@@ -223,11 +272,21 @@ func getReturningId(rows pgx.Rows) (int, error) {
 }
 
 func DeleteContaBancaria(cb models.ContaBancaria) error {
+	//verificando existencia da conta
+	res, err := GetContaBancariaById(cb.ID)
+	if err != nil {
+		log.Println("Erro verificando existencia de conta antes da exclusao:", err.Error())
+		return err
+	}
+	if len(*res) < 1 {
+		return errors.New("conta não encontrado para exclusao")
+	}
+
 	ctx := context.Background()
 	cn, _ := Pool.Acquire(ctx)
 	defer cn.Release()
 
-	_, err := cn.Exec(context.Background(), sqlDeleteContaBancaria(), cb.ID)
+	_, err = cn.Exec(context.Background(), sqlDeleteContaBancaria(), cb.ID)
 	if err != nil {
 		return nil
 	}

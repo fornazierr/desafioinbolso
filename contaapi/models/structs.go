@@ -18,10 +18,10 @@ type Titular struct {
 func (t *Titular) ErrosDelete() error {
 	erros := ""
 	if t.CPF == "" {
-		erros += "CPF vazio."
+		erros += "\"cpf\" vazio."
 	}
 	if t.ID == 0 {
-		erros += "ID vazio."
+		erros += "\"id\" vazio."
 	}
 
 	if erros != "" {
@@ -35,28 +35,28 @@ func (t *Titular) ErrosDelete() error {
 func (t *Titular) Erros() error {
 	erros := ""
 	if t.CPF == "" {
-		erros += "CPF vazio."
+		erros += "\"cpf\" vazio."
 	}
 	if t.Cidade == "" {
-		erros += "Cidade vazia."
+		erros += "\"cidade\" vazio."
 	}
 	if t.Email == "" {
-		erros += "Email vazio."
+		erros += "\"email\" vazio."
 	}
 	if t.Estado == "" {
-		erros += "Estado vazio."
+		erros += "\"estado\" vazio."
 	}
 	if t.Nascimento == "" {
-		erros += "Nascimento vazio."
+		erros += "\"nascimento\" vazio."
 	}
 	if t.Nome == "" {
-		erros += "Nome vazio"
+		erros += "\"nome\" vazio"
 	}
 	if t.NomeMae == "" {
-		erros += "Nome da Mae vazio."
+		erros += "\"nomemae\" vazio."
 	}
 	if t.NomePai == "" {
-		erros += "Nome do Pai vazio."
+		erros += "\"nomepai\" vazio."
 	}
 
 	if erros != "" {
@@ -78,19 +78,19 @@ type ContaBancaria struct {
 func (cb *ContaBancaria) Erros() error {
 	erros := ""
 	if cb.Agencia == "" {
-		erros += "Agencia vazio."
+		erros += "\"agencia\" vazio."
 	}
 	if cb.CodigoBanco < 1 {
-		erros += "Condigo baancario vazio."
+		erros += "\"codigobanco\" vazio."
 	}
 	if cb.Conta == "" {
-		erros += "Conta vazio."
+		erros += "\"conta\" vazio."
 	}
 	if cb.Digito == "" {
-		erros += "Digito verificador vazio."
+		erros += "\"digito\" vazio."
 	}
 	if cb.TitularId < 1 {
-		erros += "ID do Titular vazio."
+		erros += "\"id\" vazio."
 	}
 
 	if erros != "" {
@@ -103,7 +103,7 @@ func (cb *ContaBancaria) Erros() error {
 func (cb *ContaBancaria) ErrosDelete() error {
 	erros := ""
 	if cb.ID < 1 {
-		erros += "ID vazio."
+		erros += "\"id\" vazio."
 	}
 
 	if erros != "" {

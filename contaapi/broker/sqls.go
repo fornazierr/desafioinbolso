@@ -35,3 +35,7 @@ func sqlNewContaBancaria() string {
 func sqlDeleteContaBancaria() string {
 	return "DELETE FROM public.contabancaria WHERE id=$1;"
 }
+
+func sqlEncontraTitularByCPDF() string {
+	return "select cpf from public.titular where cpf=$1"
+}

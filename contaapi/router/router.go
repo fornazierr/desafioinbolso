@@ -40,7 +40,7 @@ func (cr *CredencialRouter) initRoutes() {
 	cr.Router.HandleFunc("/contabancaria/{id}", getContaById).Methods("GET")
 	cr.Router.HandleFunc("/contabancaria", postConta).Methods("POST")
 	cr.Router.HandleFunc("/contabancaria", deleteConta).Methods("DELETE")
-	cr.Router.HandleFunc("/contabancaria", deleteContaById).Methods("DELETE")
+	cr.Router.HandleFunc("/contabancaria/{id}", deleteContaById).Methods("DELETE")
 
 	broker.InitBroker()
 }
@@ -210,6 +210,24 @@ func deleteConta(w http.ResponseWriter, req *http.Request) {
 		}
 	}
 }
-func deleteContaById(w http.ResponseWriter, req *http.Request) {
 
+func deleteContaById(w http.ResponseWriter, req *http.Request) {
+	log.Println("Nova requisição em \"deleteContaById\".")
+	vars := mux.Vars(req)
+	id := vars["id"]
+	if id == "" {
+		sendError(errors.New("ID do titular não informado"), w)
+	} else {
+		val, _ := strconv.Atoi(id)
+		log.Println("Valor do id:", val)
+		conta := models.ContaBancaria{
+			ID: val,
+		}
+		err := broker.DeleteContaBancaria(conta)
+		if err != nil {
+			sendError(err, w)
+		} else {
+			sendOk("Sucesso ao excluir titular", w)
+		}
+	}
 }
