@@ -9,13 +9,15 @@ import (
 
 func GetConfig() models.Config {
 	c := models.Config{
-		DB_NAME:  "",
-		DB_PORT:  "",
-		DB_USER:  "",
-		DB_HOST:  "",
-		DB_PASS:  "",
-		URL_PORT: "",
-		URL_HOST: "",
+		DB_NAME:    "",
+		DB_PORT:    "",
+		DB_USER:    "",
+		DB_HOST:    "",
+		DB_PASS:    "",
+		URL_PORT:   "",
+		URL_HOST:   "",
+		CONTA_API:  "",
+		BOLETO_API: "",
 	}
 
 	c.DB_NAME = os.Getenv("DB_NAME")
@@ -25,7 +27,8 @@ func GetConfig() models.Config {
 	c.DB_USER = os.Getenv("DB_USER")
 	c.URL_PORT = os.Getenv("URL_PORT")
 	c.URL_PORT = os.Getenv("URL_PORT")
-	c.CONTABANCARIA_API = os.Getenv("CONTABANCARIA_API")
+	c.CONTA_API = os.Getenv("CONTA_API")
+	c.BOLETO_API = os.Getenv("BOLETO_API")
 
 	args := os.Args[1:]
 
@@ -46,8 +49,10 @@ func GetConfig() models.Config {
 			c.URL_PORT = arg[1]
 		case "URL_HOST":
 			c.URL_HOST = arg[1]
-		case "CONTABANCARIA_API":
-			c.CONTABANCARIA_API = arg[1]
+		case "CONTA_API":
+			c.CONTA_API = arg[1]
+		case "BOLETO_API":
+			c.BOLETO_API = arg[1]
 		}
 	}
 
@@ -72,8 +77,11 @@ func GetConfig() models.Config {
 	if c.URL_HOST == "" {
 		c.URL_HOST = "127.0.0.1"
 	}
-	if c.CONTABANCARIA_API == "" {
-		c.CONTABANCARIA_API = "http://127.0.0.1:15001"
+	if c.CONTA_API == "" {
+		c.CONTA_API = "http://127.0.0.1:15001"
+	}
+	if c.BOLETO_API == "" {
+		c.BOLETO_API = "http://127.0.0.1:15003"
 	}
 
 	return c

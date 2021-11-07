@@ -55,7 +55,7 @@ func GetSaldo(saldo models.Saldo) ([]models.Saldo, error) {
 	ctx := context.Background()
 	cn, _ := Pool.Acquire(ctx)
 	defer cn.Release()
-	rows, err := cn.Query(context.Background(), sqlGetSaldo(), saldo.ContaId, saldo.TitularId)
+	rows, err := cn.Query(ctx, sqlGetSaldo(), saldo.ContaId, saldo.TitularId)
 	if err != nil {
 		log.Println("Erro no SQL \"GetSaldo\":", err.Error())
 		return nil, err
@@ -89,6 +89,13 @@ func NewSaldo(saldo models.Saldo) error {
 }
 
 func NewRegistroSaldo(rs models.RegistroSaldo) error {
+	//verificando se titular existe
+	_, err := apiGetTitular(rs.TitularId)
+	if err != nil {
+		log.Println("NewRegistroSaldo: falha buscando titular,", err.Error())
+		return err
+	}
+
 	ctx := context.Background()
 	cn, _ := Pool.Acquire(ctx)
 	defer cn.Release()
@@ -190,14 +197,14 @@ func RealizaTransferencia(tr models.Transferencia) error {
 	log.Println("RealizaTransferencia: Iniciando operação")
 
 	//buscando a existencia de uma conta de origem
-	contaOrigem, err := getContaBancariaAPI(tr.ContaOrigemId)
+	contaOrigem, err := apiGetContaBancaria(tr.ContaOrigemId)
 	if err != nil {
 		log.Println("RealizaTransferencia: erro ao buscar conta de origem ::", err.Error())
 		return err
 	}
 
 	//buscando a existencia de uma conta de destino
-	contaDestino, err := getContaBancariaAPI(tr.ContaDestinoId)
+	contaDestino, err := apiGetContaBancaria(tr.ContaDestinoId)
 	if err != nil {
 		log.Println("RealizaTransferencia: erro ao buscar conta de destino ::", err.Error())
 		return err
