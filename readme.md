@@ -35,8 +35,8 @@ Obs: Seria legal adicionar aqui também uma opção de adicionar saldo a conta, 
 #### Criar um módulo de geração de boletos
 
 ##### Informações da API
-1 - API para criar um boleto bancário (sem necessidade de criar o pdf, só os dados mesmo).
-2 - API para verificar dados de um boleto já gerado
+- API para criar um boleto bancário (sem necessidade de criar o pdf, só os dados mesmo).
+- API para verificar dados de um boleto já gerado
 
 PS1:
 Para a geração dos boletos, seria legal gerar uma linha digitável próxima do real, usando as mesmas regras. Vou enviar 2 links que podem ajudar a entender e testar como essa parte funciona:
@@ -55,3 +55,5 @@ Depois de realizar o download do projeto, dentro de cada pasta há um arquivo ch
 para realizar um deploy separado de cada aplicação.
 Garanta que cada arquivo `deploy` tenha a permissão de executar, um `chmod +x deploy` já resolve.
 Caso queira excluir todos as imagens e containers existe um arquivo chamado `undeploy` na raiz de, que exclui todas estas peculiaridades.
+
+Exportei via `Postman`, todos os endpoints desenvolvidos para facilitar o teste da APIs
