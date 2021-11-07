@@ -9,6 +9,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/jackc/pgx/v4"
 	"github.com/jackc/pgx/v4/pgxpool"
 )
 
@@ -51,8 +52,10 @@ func InitBroker() {
 }
 
 func NewBoleto(bol models.BoletoRequest) error {
+	log.Println("NewBoleto: realizando chamada")
 	var modelo models.MontaBoleto
 
+	log.Println("Iniciando montagem de boleto")
 	modelo.CodigoBanco = bol.CodigoBanco
 	modelo.Agencia = fmt.Sprintf("%04d", bol.Agencia)
 	modelo.Carteira = fmt.Sprintf("%02d", bol.Carteira)
@@ -65,12 +68,13 @@ func NewBoleto(bol models.BoletoRequest) error {
 	modelo.NossoNumero = apiutil.FormataNossoNumero(bol.NossoNumero, 11)
 	modelo.CodigoBeneficiario = fmt.Sprintf("%07d", bol.CodigoBeneficiario)
 	fmt.Printf("ModeloGerado gerado: %+v\n", modelo)
+	log.Println("Gerando código de barras")
 	codigoBarras, err := apiutil.GeraCodigoBarras(modelo)
 	if err != nil {
 		return err
 	}
 	log.Println("Código de barras gerado:", codigoBarras.CodigoBarras)
-
+	log.Println("Gerando linha digitável")
 	linhaDigitavel, err := apiutil.GetLinhaDigitavel(codigoBarras.CodigoBarras, modelo)
 	if err != nil {
 		return err
@@ -104,6 +108,7 @@ func NewBoleto(bol models.BoletoRequest) error {
 
 //(contaorigem_id, contadestino_id, codigobanco, agencia, carteira, datavencimento, valor, nossonumero, codigobeneficiario, linhadigitavel, codigobarras)
 func saveBoleto(b models.Boleto) error {
+	log.Println("GetAllBoleto: realizando chamada")
 	ctx := context.Background()
 	cn, _ := Pool.Acquire(ctx)
 	defer cn.Release()
@@ -117,26 +122,169 @@ func saveBoleto(b models.Boleto) error {
 	return nil
 }
 
+func GetAllBoleto() ([]models.Boleto, error) {
+	log.Println("GetAllBoleto: realizando chamada")
+	ctx := context.Background()
+	cn, _ := Pool.Acquire(ctx)
+	defer cn.Release()
+
+	rows, err := cn.Query(context.Background(), sqlGetAllBoleto())
+	if err != nil {
+		log.Println("saveBoleto: Erro durante sql-> ", err.Error())
+		return nil, err
+	}
+
+	res, err := rowsToArray(rows)
+	if err != nil {
+		log.Println("getBoletoById: Erro no parse do array", err.Error())
+		return nil, err
+	}
+
+	return res, nil
+}
+
 func GetBoleto(bol models.Boleto) ([]models.Boleto, error) {
-	if bol.ID > 0 { //busca pelo id do boleto
+	log.Println("GetBoleto: realizando chamada")
+	//busca pelo id do boleto
+	if bol.ID > 0 {
 		res, err := getBoletoById(bol.ID)
 		if err != nil {
 			return nil, err
 		}
-		return res, nil
-	} else { //busca por dados do booleto
+		if len(res) > 0 {
+			return res, nil
+		} else {
+			log.Println("GetBoleto: Nenhum boleto encontrado por ID.")
+		}
+	}
+	//caso não ache resultados procura pela combinacao de banco & agencia & carteira
+	if bol.Agencia != "" && bol.CodigoBanco != "" && bol.Carteira != "" { //busca por dados do booleto
 		res, err := getBoletoByDados(bol)
 		if err != nil {
 			return nil, err
 		}
-		return res, nil
+
+		if len(res) > 0 {
+			return res, nil
+		} else {
+			log.Println(fmt.Sprintf("GetBoleto: Nenhum boleto encontrado para a o banco %s da agencia %s da carteira %s", bol.CodigoBanco, bol.Agencia, bol.Carteira))
+		}
 	}
+	//caso nao ache resultados, procura pelo conta de origem
+	if bol.ContaOrigemId > 0 {
+		res, err := getBoletosByContaOrigem(bol.ContaOrigemId)
+		if err != nil {
+			return nil, err
+		}
+
+		if len(res) > 0 {
+			log.Println(fmt.Sprintf("GetBoleto: Nenhum boleto encontrado para a conta de origem %d", bol.ContaOrigemId))
+			return res, nil
+		}
+	}
+	return nil, nil
 }
 
 func getBoletoById(id int) ([]models.Boleto, error) {
-	return nil, nil
+	log.Println("getBoletoById: realizando chamada")
+	ctx := context.Background()
+	cn, _ := Pool.Acquire(ctx)
+	defer cn.Release()
+
+	rows, err := cn.Query(context.Background(), sqlGetBoletoById(), id)
+	if err != nil {
+		log.Println("saveBoleto: Erro durante sql-> ", err.Error())
+		return nil, err
+	}
+
+	res, err := rowsToArray(rows)
+	if err != nil {
+		log.Println("getBoletoById: Erro no parse do array", err.Error())
+		return nil, err
+	}
+
+	return res, nil
 }
 
 func getBoletoByDados(bol models.Boleto) ([]models.Boleto, error) {
-	return nil, nil
+	log.Println("getBoletoByDados: realizando chamada")
+	ctx := context.Background()
+	cn, _ := Pool.Acquire(ctx)
+	defer cn.Release()
+
+	rows, err := cn.Query(context.Background(), sqlGetBoletoByDados1(), bol.CodigoBanco, bol.Agencia, bol.Carteira)
+	if err != nil {
+		log.Println("saveBoleto: Erro durante sql-> ", err.Error())
+		return nil, err
+	}
+
+	res, err := rowsToArray(rows)
+	if err != nil {
+		log.Println("getBoletoByDados: Erro no parse do array", err.Error())
+		return nil, err
+	}
+
+	return res, nil
+}
+
+func getBoletosByContaOrigem(id int) ([]models.Boleto, error) {
+	log.Println("getBoletosByContaOrigem: realizando chamada")
+	ctx := context.Background()
+	cn, _ := Pool.Acquire(ctx)
+	defer cn.Release()
+
+	rows, err := cn.Query(context.Background(), sqlGetBoletoByContaOrigem(), id)
+	if err != nil {
+		log.Println("getBoletosByContaOrigem: Erro durante sql-> ", err.Error())
+		return nil, err
+	}
+
+	res, err := rowsToArray(rows)
+	if err != nil {
+		log.Println("getBoletosByContaOrigem: Erro no parse do array", err.Error())
+		return nil, err
+	}
+
+	return res, nil
+}
+
+//id, contaorigem_id, contadestino_id, codigobanco, agencia, carteira, datavencimento, valor, nossonumero, codigobeneficiario, linhadigitavel, codigobarras
+func rowsToArray(rows pgx.Rows) ([]models.Boleto, error) {
+	var res []models.Boleto
+	for rows.Next() {
+		id := 0
+		cori := 0
+		cdest := 0
+		codbanco := ""
+		ag := ""
+		car := ""
+		dvenc := ""
+		var valor float64
+		nosso := ""
+		bene := ""
+		linha := ""
+		barra := ""
+		rows.Scan(&id, &cori, &cdest, &codbanco, &ag, &car, &dvenc, &valor, &nosso, &bene, &linha, &barra)
+		if err := rows.Err(); err != nil {
+			log.Println("rowsToArray Erro: ", err.Error())
+			return nil, err
+		}
+		bol := models.Boleto{
+			ID:                 id,
+			ContaOrigemId:      cori,
+			ContaDestinoId:     cdest,
+			CodigoBanco:        codbanco,
+			Agencia:            ag,
+			Carteira:           car,
+			DataVencimento:     dvenc,
+			Valor:              valor,
+			NossoNumero:        nosso,
+			CodigoBeneficiario: bene,
+			CodigoBarras:       barra,
+			LinhaDigitavel:     linha,
+		}
+		res = append(res, bol)
+	}
+
+	return res, nil
 }
