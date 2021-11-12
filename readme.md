@@ -58,3 +58,10 @@ Garanta que cada arquivo `deploy` tenha a permissão de executar, um `chmod +x d
 Caso queira excluir todos as imagens e containers existe um arquivo chamado `undeploy` na raiz de, que exclui todas estas peculiaridades.
 
 Exportei via `Postman`, todos os endpoints desenvolvidos para facilitar o teste da APIs, os mesmos contém uma documentação integrada à requisição para poder sanar sobre o que a mesma raliza no sistema.
+
+
+### Melhorias pós análise
+Itens para implementar para melhoria do projeto
+
+- Validador de campos de struct (Utilizando o Validator do go-playground)
+- Utilizar GORM para uma melhoria de tratamento de banco de dados
