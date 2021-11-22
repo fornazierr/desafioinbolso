@@ -3,9 +3,9 @@ package models
 import "errors"
 
 type Saldo struct {
-	TitularId int     `json:"titularid"`
-	ContaId   int     `json:"contaid"`
-	Saldo     float64 `json:"saldo"`
+	TitularId int     `json:"titularid" validate:"required,gte=0"`
+	ContaId   int     `json:"contaid" validate:"required,gte=0"`
+	Saldo     float64 `json:"saldo" validate:"required,gte=0"`
 }
 
 func (s *Saldo) ErroGetSaldo() error {
@@ -25,10 +25,10 @@ func (s *Saldo) ErroGetSaldo() error {
 }
 
 type RegistroSaldo struct {
-	TitularId int     `json:"titularid"`
-	ContaId   int     `json:"contaid"`
-	Sinal     int     `json:"sinal"`
-	Valor     float64 `json:"valor"`
+	TitularId int     `json:"titularid" validate:"required,gt=0"`
+	ContaId   int     `json:"contaid" validate:"required,gt=0"`
+	Sinal     int     `json:"sinal" validate:"required,gte=0,lte=1"`
+	Valor     float64 `json:"valor" validate:"required,gte=0"`
 }
 
 func (t *RegistroSaldo) Erros() error {
@@ -67,9 +67,9 @@ func (t *RegistroSaldo) ErrosGET() error {
 }
 
 type Transferencia struct {
-	ContaOrigemId  int     `json:"contaorigemid"`
-	ContaDestinoId int     `json:"contadestinoid"`
-	Valor          float64 `json:"valor"`
+	ContaOrigemId  int     `json:"contaorigemid" validate:"required,gte=0"`
+	ContaDestinoId int     `json:"contadestinoid" validate:"required,gte=0"`
+	Valor          float64 `json:"valor" validate:"required,gte=0"`
 }
 
 func (t *Transferencia) Erros() error {
@@ -109,12 +109,12 @@ type ReturnMessage struct {
 }
 
 type ContaBancaria struct {
-	ID          int    `json:"id"`
-	CodigoBanco int    `json:"codigobanco"`
-	Agencia     string `json:"agencia"`
-	Conta       string `json:"conta"`
-	Digito      string `json:"digito"`
-	TitularId   int    `json:"titularid"`
+	ID          int    `json:"id" validate:"required"`
+	CodigoBanco int    `json:"codigobanco" validate:"required"`
+	Agencia     string `json:"agencia" validate:"required"`
+	Conta       string `json:"conta" validate:"required"`
+	Digito      string `json:"digito" validate:"required"`
+	TitularId   int    `json:"titularid" validate:"required"`
 }
 
 func (cb *ContaBancaria) Erros() error {
@@ -143,15 +143,15 @@ func (cb *ContaBancaria) Erros() error {
 }
 
 type Titular struct {
-	ID         int    `json:"id"`
-	Nome       string `json:"nome"`
-	CPF        string `json:"cpf"`
-	Email      string `json:"email"`
-	Nascimento string `json:"nascimento"`
-	NomePai    string `json:"nomepai"`
-	NomeMae    string `json:"nomemae"`
-	Cidade     string `json:"cidade"`
-	Estado     string `json:"estado"`
+	ID         int    `json:"id" validate:"required"`
+	Nome       string `json:"nome" validate:"required"`
+	CPF        string `json:"cpf" validate:"required"`
+	Email      string `json:"email" validate:"required,email"`
+	Nascimento string `json:"nascimento" validate:"required"`
+	NomePai    string `json:"nomepai" validate:"required"`
+	NomeMae    string `json:"nomemae" validate:"required"`
+	Cidade     string `json:"cidade" validate:"required"`
+	Estado     string `json:"estado" validate:"required"`
 }
 
 //Veriica na estrutura TITULAR erros para gravação ou atualização de dados
